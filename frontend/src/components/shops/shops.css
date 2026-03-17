@@ -1,27 +1,26 @@
 .form-group {
   display: flex;
   flex-direction: column;
-  min-width: 150px;
   flex: 1;
+  min-width: 150px;
   max-width: 250px;
 }
 
 .form-group label {
   font-weight: bold;
-  width: 120px;
   font-size: 0.9rem;
+  width: 120px;
 }
+
 .form-group.flex-grow {
   flex: 3;
-  display: flex;
-  flex-direction: column;
 }
 
 .form-group.bottom-align {
-  display: flex;
   align-items: flex-end;
   padding-bottom: 0.5rem;
 }
+
 .form-input2 {
   background-color: #1a1a1a;
   color: white;
@@ -29,9 +28,6 @@
   border-radius: 4px;
   font-size: 0.9rem;
   padding: 0.4rem 0.6rem;
-  resize: none;
-
-  /* HIER ANPASSEN */
   min-height: 100px;
   width: 100%;
   min-width: 575px;
@@ -39,13 +35,12 @@
 
 .form-input,
 .form-select {
-  flex-grow: 1;
-  padding: 0.4rem 0.6rem;
   background-color: #1a1a1a;
   color: white;
   border: 1px solid #555;
   border-radius: 4px;
   font-size: 0.9rem;
+  padding: 0.4rem 0.6rem;
   width: 100%;
   max-width: 400px;
 }
@@ -54,18 +49,19 @@
   background-color: #000;
   color: white;
   padding: 0.5rem 1rem;
-  border: none;
   border-radius: 6px;
-  cursor: pointer;
   font-weight: bold;
+  cursor: pointer;
   transition: background-color 0.2s ease;
+  width: 100%;
 }
 
 .form-button:hover {
   background-color: #333;
 }
+
 .grid-stack {
-  margin-top: 80px; /* oder so hoch wie deine Navbar */
+  margin-top: 80px;
 }
 
 .grid-content {
@@ -77,12 +73,11 @@
 
 .grid-stack-item-content {
   display: flex;
-  flex-direction: column; /* HINZUFÜGEN */
-  align-items: flex-start; /* HINZUFÜGEN */
-  justify-content: flex-start; /* HINZUFÜGEN oder anpassen */
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
   padding: 10px;
   height: 100%;
-  box-sizing: border-box;
   background-color: #202020;
   border: 1px solid #555;
   border-radius: 8px;
@@ -91,12 +86,12 @@
 
 .form-row {
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
   gap: 1rem;
   width: 100%;
   justify-content: space-between;
 }
+
 option {
   background-color: black;
   color: white;

@@ -23,3 +23,17 @@ export const getItemResources = async () => {
   if (!res.ok) throw new Error('Fehler beim Laden der Ressourcen');
   return await res.json();
 };
+export const getItemTypes = async () => {
+  const response = await fetch("http://localhost:8081/api/items/types");
+  if (!response.ok) {
+    throw new Error("Fehler beim Laden der Itemtypen");
+  }
+  return response.json();
+};
+export const getItemRarities = async () => {
+  const response = await fetch("http://localhost:8081/api/items/rarities");
+  if (!response.ok) {
+    throw new Error("Fehler beim Laden der Seltenheiten");
+  }
+  return response.json();
+};

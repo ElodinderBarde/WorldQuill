@@ -1,41 +1,34 @@
-/* === Hauptcontainer: Höhe um etwa 1 NPC-Zeile reduziert === */
 .mitglieder-container {
     display: flex;
     flex-direction: column;
-    height: 470px;           /* vorher ~540px – um 1 Zeile reduziert */
-    overflow: hidden;        /* wichtig! */
+    height: 470px;
+    overflow: hidden;
 }
 
-/* === Tabelle fix, Inhalt scrollt === */
 .npc-table {
     width: 100%;
     border-collapse: collapse;
     table-layout: fixed;
 }
 
-/* Scroll nur auf tbody */
 .npc-table tbody {
     display: block;
-    max-height: 390px;       /* kontrolliert die sichtbaren Zeilen */
     overflow-y: auto;
     overflow-x: hidden;
 }
 
-/* Kopfzeile bleibt fix */
 .npc-table thead {
     display: table;
     width: 100%;
     table-layout: fixed;
 }
 
-/* Jede Zeile gleich breit wie Kopf */
 .npc-table tbody tr {
     display: table;
     width: 100%;
     table-layout: fixed;
 }
 
-/* Optional: schönerer Scrollbar */
 .npc-table tbody::-webkit-scrollbar {
     width: 8px;
 }
@@ -56,7 +49,6 @@
     justify-content: flex-end;
     gap: 10px;
 }
-/* --- Vollbild-Backdrop für Modal --- */
 .npc-modal-backdrop {
     position: fixed;
     top: 0;
@@ -67,10 +59,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 2000;  /* über GridStack und allem! */
+    z-index: 2000;
 }
 
-/* --- Modal selbst --- */
 .npc-modal {
     background: #1e1e1e;
     padding: 20px;

@@ -3,8 +3,6 @@ export default function ItemContainer({ children }) {
       <div
       className="item-container"
        style={{
-
-
       }}>
         {children}
       </div>

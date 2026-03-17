@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { createItem, getItemResources } from '../../service/itemAPI';
+import {createItem, getItemRarities, getItemResources, getItemTypes} from '../../service/itemAPI';
 
 
 export default function ItemForm() {
@@ -18,8 +18,32 @@ export default function ItemForm() {
   });
 
   const [resources, setResources] = useState([]);
+    const [types, setTypes] = useState([]);
+    const [rarities, setRarities] = useState([]);
+    useEffect(() => {
 
+        const fetchTypes = async () => {
+            try {
+                const data = await getItemTypes();
+                setTypes(data);
+            } catch (err) {
+                console.error("Fehler beim Laden der Typen:", err);
+            }
+        };
 
+        const fetchRarities = async () => {
+            try {
+                const data = await getItemRarities();
+                setRarities(data);
+            } catch (err) {
+                console.error("Fehler beim Laden der Rarities:", err);
+            }
+        };
+
+        fetchTypes();
+        fetchRarities();
+
+    }, []);
   useEffect(() => {
     const fetchResources = async () => {
       try {
@@ -45,15 +69,20 @@ export default function ItemForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const newItem = await createItem(item);
-      alert('Item erfolgreich erstellt!');
-      setItem({ ...item, name: '', beschreibung: '' }); // Reset
+        await createItem(item);
+        alert('Item erfolgreich erstellt!');
+        setItem({ ...item, name: '', beschreibung: '' }); // Reset
     } catch (err) {
       console.error(err);
       alert('Fehler beim Erstellen.');
     }
   };
-
+    const safeSortedTypes = () => {
+        return types
+            .filter((t) => t != null)
+            .slice()
+            .sort((a, b) => String(a).localeCompare(String(b)));
+    };
   return (
     <form onSubmit={handleSubmit} autoComplete="off" className="item-form">
       <label>
@@ -73,37 +102,25 @@ export default function ItemForm() {
       <br />
       <label>
         Typ:
-        <select name="typ" value={item.typ} onChange={handleChange}>
-            <option value="">Alle</option>
-            <option value="Lebensmittel">Lebensmittel</option>
-            <option value="Transportmittel">Transportmittel</option>
-            <option value="Waffe">Waffen</option>
-            <option value="Kunstgegenstände">Kunstgegenstände</option>
-            <option value="Zutaten">Zutaten</option>
-            <option value="Trank">Tränke</option>
-            <option value="Other">Andere</option>
-            <option value="Edelsteine">Edelsteine</option>
-            <option value="Buch">Buch</option>
-            <option value="Dienstleistung">Dienstleistung</option>
-            <option value="Gift">Gift</option>
-            <option value="Handelsgüter">Handelsgüter</option>
-            <option value="Instrument">Instrument</option>
-            <option value="Ring">Ring</option>
-            <option value="Rohstoff">Rohstoff</option>
-            <option value="Sattelzeug">Sattelzeug</option>
-            <option value="Schriftrolle">Schriftrolle</option>
-            <option value="Tiere">Tiere</option>
-            <option value="Rüstung">Rüstung</option>
-            <option value="Werkzeug">Werkzeug</option>
-            <option value="Wundersamer Gegenstand">Wundersamer Gegenstand</option>
-            <option value="Zauberstab">Zauberstab</option>
-            <option value="Zauberstecken">Zauberstecken</option>
-            <option value="Zepter">Zepter</option>
-            <option value="Zutaten">Zutaten</option>
-            <option value="Other">Anderes</option>
-            <option value="Werkzeug">Werkzeug</option>
-            <option value="Werkzeug">Werkzeug</option>
-        </select>
+          <select name="typ" value={item.typ} onChange={handleChange}>
+              <option value="">Alle</option>
+
+              {safeSortedTypes().map((type) => (
+                  <option key={type} value={type}>
+                      {type}
+                  </option>
+              ))}
+          </select>
+          <select name="rarity" value={item.rarity} onChange={handleChange}>
+              <option value="">Alle</option>
+
+              {rarities.map((rarity) => (
+                  <option key={rarity} value={rarity}>
+                      {rarity}
+                  </option>
+              ))}
+
+          </select>
       </label>
       <br />
 <label>
