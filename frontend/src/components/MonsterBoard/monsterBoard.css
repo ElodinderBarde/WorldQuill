@@ -1,13 +1,21 @@
-.monsterlist-panel .grid-stack-monster-content {
+/* =========================
+   LIST PANEL (IDENTISCH ITEMBOARD)
+========================= */
+.itemlist-panel .grid-stack-item-content {
     width: 100%;
     height: 100%;
     overflow-y: auto;
 }
+
+/* =========================
+   TABLE
+========================= */
 .monster-table {
     width: 100%;
     table-layout: fixed;
     border-collapse: collapse;
 }
+
 .monster-table thead th {
     position: sticky;
     top: 0;
@@ -15,46 +23,54 @@
     z-index: 10;
 }
 
-.monster-table th, .monster-table td {
+.monster-table th,
+.monster-table td {
     border: 1px solid #555;
     padding: 8px;
     text-align: left;
-
 }
 
-.monster-table th:nth-child(1) { width: 45%; }
-.monster-table th:nth-child(2) { width: 25%; }
-.monster-table th:nth-child(3) { width: 20%; }
-.monster-table th:nth-child(4) { width: 10%; }
+/* =========================
+   DETAIL PANEL
+========================= */
 .detail-panel {
     overflow: hidden;
 }
-.detail-panel .grid-stack-monster-content {
+
+.detail-panel .grid-stack-item-content {
     transform: translateX(100%);
     transition: transform 0.35s ease;
 }
 
-.detail-panel.active .grid-stack-monster-content {
+.detail-panel.active .grid-stack-item-content {
     transform: translateX(0);
 }
 
-.monster-detail h1 {
-    font-size: 30px;
-    padding-bottom: 15px;
-    color: #f0f0f0;
+/* =========================
+   FILTER
+========================= */
+.monster-filter {
+    background: #1a1a1a;
+    padding: 10px;
+    border-radius: 6px;
 }
 
-.beschreibungTB textarea{
-    background-color: #1a1a1a;
-    color: white;
-    border: 1px solid #555;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    padding: 0.4rem 0.6rem;
-    resize: none;
-
-    /* HIER ANPASSEN */
-    min-height: 100px;
+.monster-filter select,
+.monster-filter input {
     width: 100%;
-    min-width: 575px;
+    margin-bottom: 8px;
+}
+
+/* =========================
+   FORM
+========================= */
+.monster-form {
+    overflow-y: auto;
+    height: 100%;
+}
+
+.monsterlist-panel .grid-stack-item-content {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
 }

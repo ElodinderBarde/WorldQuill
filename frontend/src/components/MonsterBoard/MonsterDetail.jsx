@@ -10,11 +10,8 @@ export default function MonsterDetail({ monster }) {
     return (
         <div className="monster-detail">
 
-
-
-
             <h1 style={{ fontSize: "25px", textDecoration: "underline" }}>{monster?.name}</h1>
-<br/>
+            <br/>
             <p><strong>Schlagwort:</strong> {monster?.schlagwort ?? "-"}</p>
 
             <p><strong>Herausforderungsgrad:</strong> {monster?.challengeLvl ?? "-"}</p>

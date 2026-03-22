@@ -14,7 +14,7 @@ import ShopDetails from "./pages/shop-details.jsx";
 import NpcDetailPage from "./pages/NpcDetailPage.jsx";
 import NpcCreate from "./pages/NpcCreate.jsx";
 import World  from "./pages/World.jsx";
-
+import TestSetup from "./components/BoardTemplates/TestSetup/TestBoard.jsx";
 
 function App() {
   return (
@@ -34,6 +34,7 @@ function App() {
         <Route path="/shops/:shopId" element={<ShopDetails />} />
         <Route path="/npc/:npcId" element={<NpcDetailPage />} />
         <Route path={"/npc/create"} element={<NpcCreate />} />
+        <Route path={"/monster/testsetup"} element={<TestSetup />} />
 
 
 

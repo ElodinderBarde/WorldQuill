@@ -8,16 +8,31 @@ import { GridStack } from "gridstack";
 import MonsterList from "@/components/MonsterBoard/MonsterList.jsx";
 import MonsterForm from "@/components/MonsterBoard/MonsterForm.jsx";
 import MonsterDetail from "@/components/MonsterBoard/MonsterDetail.jsx";
+import PdfModal from "@/components/pdfViewer/pdfModal.jsx";
+import PdfViewer from "@/components/pdfViewer/pdfViewer.jsx";
 
 export default function Monster() {
     const [allMonsters, setAllMonsters] = useState([]);
     const [filteredMonsters, setFilteredMonsters] = useState([]);
     const [selectedMonster, setSelectedMonster] = useState(null);
+    const [showPdf, setShowPdf] = useState(false);
+    const [pdfMonster, setPdfMonster] = useState(null);
 
     const listRef = useRef(null);
     const detailRef = useRef(null);
     const gridRef = useRef(null);
     const grid = useRef(null);
+
+    const openPdf = (monster) => {
+        if (!monster) return;
+        setPdfMonster(monster);
+        setShowPdf(true);
+    };
+
+    const closePdf = () => {
+        setShowPdf(false);
+        setPdfMonster(null);
+    };
 
     useEffect(() => {
         grid.current = GridStack.init({
@@ -117,21 +132,24 @@ export default function Monster() {
             });
         }
     }, [selectedMonster]);
-    const reloadMonsters = () => {
-        getMonsters()
-            .then(data => {
-                setAllMonsters(data);
-                setFilteredMonsters(data);
-            });
-    };
+
+    const pdfPages = [
+        pdfMonster?.page1, pdfMonster?.page2, pdfMonster?.page3
+    ].filter(p => p != null);
 
     return (
         <>
-            <Navbar/>
+            <Navbar />
+            {/* PDF MODAL */}
+            <PdfModal isOpen={showPdf} onClose={closePdf}>
+                {pdfMonster && (
+                    <PdfViewer file={pdfMonster.book}
+                               pages={pdfPages} /> )}
+            </PdfModal>
             <div className="grid-stack" ref={gridRef}>
                 <div className="grid-stack-item" gs-x="0" gs-y="0" gs-w="3" gs-h="5">
                     <div className="grid-stack-item-content">
-                        <MonsterForm />
+                        <MonsterForm/>
                     </div>
                 </div>
                 <div className="grid-stack-item" gs-x="0" gs-y="5" gs-w="3" gs-h="3">
@@ -146,7 +164,8 @@ export default function Monster() {
                     gs-x="3" gs-y="0" gs-w="9" gs-h="8"
                 >
                     <div className="grid-stack-item-content">
-                        <MonsterList monsters={filteredMonsters} onSelect={setSelectedMonster} onItemDoubleClick={hideMonsterDetails} />
+                        <MonsterList monsters={filteredMonsters} onSelect={setSelectedMonster}
+                                     onItemDoubleClick={hideMonsterDetails}/>
                     </div>
                 </div>
 
@@ -159,8 +178,11 @@ export default function Monster() {
                     gs-h="8"
                 >
                     <div className="grid-stack-item-content">
-                        <MonsterDetail monster={selectedMonster}/>
+                        <MonsterDetail monster={selectedMonster}
+                                       onOpenPdf={openPdf}
+                        />
                     </div>
+
                 </div>
             </div>
         </>

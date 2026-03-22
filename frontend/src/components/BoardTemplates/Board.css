@@ -1,0 +1,109 @@
+/* =========================
+   LIST PANEL (IDENTISCH ITEMBOARD)
+========================= */
+.board-list-panel .grid-stack-item-content {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}
+
+/* =========================
+   TABLE
+========================= */
+.board-table-container {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}
+
+/* optional UX */
+.board-row:hover {
+    background: rgba(255,255,255,0.05);
+}
+
+/* Sticky Header */
+.board-table thead th {
+    position: sticky;
+    top: 0;
+    background: #1f1f1f;
+    z-index: 10;
+}
+
+/* Cells */
+.board-table th,
+.board-table td {
+    border: 1px solid #555;
+    padding: 8px;
+    text-align: left;
+}
+
+/* Column widths (optional, später dynamisch machen) */
+.board-table th:nth-child(1) { width: 45%; }
+.board-table th:nth-child(2) { width: 25%; }
+.board-table th:nth-child(3) { width: 20%; }
+.board-table th:nth-child(4) { width: 10%; }
+
+/* =========================
+   DETAIL PANEL (SLIDE IN)
+========================= */
+.detail-panel {
+    overflow: hidden;
+}
+
+.detail-panel .grid-stack-item-content {
+    transform: translateX(100%);
+    transition: transform 0.35s ease;
+}
+
+.detail-panel.active .grid-stack-item-content {
+    transform: translateX(0);
+}
+
+/* =========================
+   FILTER
+========================= */
+.board-filter {
+    background: #1a1a1a;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.board-filter select,
+.board-filter input {
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+/* =========================
+   FORM
+========================= */
+.board-form {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}
+
+/* =========================
+   DETAIL CONTENT
+========================= */
+.board-detail h1 {
+    font-size: 30px;
+    padding-bottom: 15px;
+    color: #f0f0f0;
+}
+
+/* =========================
+   TEXTAREA (SHARED)
+========================= */
+.beschreibungTB textarea {
+    background-color: #1a1a1a;
+    color: white;
+    border: 1px solid #555;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    padding: 0.4rem 0.6rem;
+    resize: none;
+
+    min-height: 100px;
+    width: 100%;
+}

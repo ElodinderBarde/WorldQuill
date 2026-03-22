@@ -1,0 +1,26 @@
+.pdf-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.pdf-modal-content {
+    width: 80%;
+    height: 80%;
+    background: #1a1a1a;
+    border-radius: 8px;
+    padding: 1rem;
+    overflow: auto;
+}
+
+.pdf-close-btn {
+    float: right;
+    cursor: pointer;
+}
