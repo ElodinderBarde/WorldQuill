@@ -40,6 +40,15 @@ import axios from "axios";
         const [symbol, setSymbol] = useState([]);
 
 
+        useEffect(() => {
+            axios.get("/api/Race").then((response) => {
+                if (JSON.stringify(races) !== JSON.stringify(response.data)) {
+                    setRaces(response.data);
+                }
+            });
+        }, [races]);
+
+
 
 
         const initialForm = {
@@ -272,12 +281,13 @@ import axios from "axios";
         };
 
 
+
         const renderCell = (label, value, onChange) => (
             <div className="stat-cell">
                 <label>{label}</label>
                 <input
                     type="number"
-                    value={value}
+                    value={value ?? ''} // ensure controlled input never becomes undefined
                     onChange={(e) => onChange(label, e.target.value)}
                     style={{ width: "60px", marginLeft: "5px" }}
                 />
@@ -580,11 +590,13 @@ import axios from "axios";
                         <label>Volk:</label>
                         <select name="race" value={form.race} onChange={handleChange}>
                             <option value="">Wähle Volk</option>
-                            {races.map(r => (
-                                <option key={r.id} value={r.id}>{r.racename}</option>
+                            {races.map(race => (
+                                <option key={race.id} value={race.id}>{race.racename}</option>
                             ))}
+
                         </select>
                     </div>
+
 
 
 
@@ -598,10 +610,10 @@ import axios from "axios";
                                 </option>
                             ))}
                         </select>
-
-
-
                     </div>
+
+
+
 
 
 
@@ -805,6 +817,7 @@ import axios from "axios";
                                     <option key={l.id} value={l.locationId}>{l.cityName || l.villageName}</option>
 
                             ))}
+
 
 
                             </select>

@@ -1,0 +1,60 @@
+.monsterlist-panel .grid-stack-monster-content {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}
+.monster-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+.monster-table thead th {
+    position: sticky;
+    top: 0;
+    background: #1f1f1f;
+    z-index: 10;
+}
+
+.monster-table th, .monster-table td {
+    border: 1px solid #555;
+    padding: 8px;
+    text-align: left;
+
+}
+
+.monster-table th:nth-child(1) { width: 45%; }
+.monster-table th:nth-child(2) { width: 25%; }
+.monster-table th:nth-child(3) { width: 20%; }
+.monster-table th:nth-child(4) { width: 10%; }
+.detail-panel {
+    overflow: hidden;
+}
+.detail-panel .grid-stack-monster-content {
+    transform: translateX(100%);
+    transition: transform 0.35s ease;
+}
+
+.detail-panel.active .grid-stack-monster-content {
+    transform: translateX(0);
+}
+
+.monster-detail h1 {
+    font-size: 30px;
+    padding-bottom: 15px;
+    color: #f0f0f0;
+}
+
+.beschreibungTB textarea{
+    background-color: #1a1a1a;
+    color: white;
+    border: 1px solid #555;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    padding: 0.4rem 0.6rem;
+    resize: none;
+
+    /* HIER ANPASSEN */
+    min-height: 100px;
+    width: 100%;
+    min-width: 575px;
+}

@@ -89,7 +89,7 @@ export default function ClanMitgliederList({ clan }) {
                         <tbody>
                         {mitglieder.map(npc => (
                             <tr key={npc.npcId}>
-                                <td><button classname="btn-small">
+                                <td><button className="btn-small">
                                     ✏
                                 </button></td>
                                 <td>{npc.firstname} {npc.lastname}</td>
