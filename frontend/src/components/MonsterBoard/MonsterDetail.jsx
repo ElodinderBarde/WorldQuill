@@ -1,4 +1,7 @@
-export default function MonsterDetail({ monster }) {
+// MonsterDetail.jsx
+
+export default function MonsterDetail({ monster, onOpenPdf }) {
+
     if (!monster) {
         return (
             <div className="monster-detail placeholder">
@@ -9,13 +12,13 @@ export default function MonsterDetail({ monster }) {
 
     return (
         <div className="monster-detail">
+            <h1 style={{ fontSize: "25px", textDecoration: "underline" }}>
+                {monster?.name}
+            </h1>
+            <br />
 
-            <h1 style={{ fontSize: "25px", textDecoration: "underline" }}>{monster?.name}</h1>
-            <br/>
             <p><strong>Schlagwort:</strong> {monster?.schlagwort ?? "-"}</p>
-
             <p><strong>Herausforderungsgrad:</strong> {monster?.challengeLvl ?? "-"}</p>
-
             <p><strong>Quelle:</strong> {monster?.book ?? "-"}</p>
 
             <p>
@@ -23,7 +26,8 @@ export default function MonsterDetail({ monster }) {
                 {[monster?.page1, monster?.page2, monster?.page3]
                     .filter(Boolean)
                     .join(", ") || "-"}
-                <button onClick={() => openPdf(monster)}>
+                {" "}
+                <button onClick={() => onOpenPdf?.(monster)}>
                     Seiten anzeigen
                 </button>
             </p>
