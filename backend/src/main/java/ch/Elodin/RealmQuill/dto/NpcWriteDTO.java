@@ -1,8 +1,7 @@
 package ch.Elodin.RealmQuill.dto;
 
 import ch.Elodin.RealmQuill.model.enums.EnumSymbol;
-import ch.Elodin.RealmQuill.model.npcinfo.Family;
-import ch.Elodin.RealmQuill.model.npcinfo.Level;
+
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;

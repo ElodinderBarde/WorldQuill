@@ -131,7 +131,7 @@ public class Npc {
 
 
 	@ManyToOne
-	@JoinColumn(name = "npc_kleidungsqualitÃ¤t_ID")
+	@JoinColumn(name = "npc_kleidungsqualität_ID")
 	private KleidungQuali KleidungQuali;
 
 

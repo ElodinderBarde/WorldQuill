@@ -113,6 +113,7 @@ export default function Itemboard() {
               <ItemForm />
             </div>
           </div>
+
           <div className="grid-stack-item" gs-x="0" gs-y="5" gs-w="3" gs-h="3">
             <div className="grid-stack-item-content">
               <ResourceFilter onFilterChange={handleFilterChange}/>

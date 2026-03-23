@@ -1,13 +1,13 @@
-package ch.Elodin.RealmQuill;
+package RealmQuill;
 
 import ch.Elodin.RealmQuill.dto.ItemDTO;
 import ch.Elodin.RealmQuill.dto.ShopItemDTO;
-import model.Item;
-import model.shop.Shop;
-import model.shop.ShopItem;
-import ch.Elodin.RealmQuill.repository.ItemRepository;
+import ch.Elodin.RealmQuill.model.Item;
+import ch.Elodin.RealmQuill.model.shop.Shop;
+import ch.Elodin.RealmQuill.model.shop.ShopItem;
 import ch.Elodin.RealmQuill.repository.shop.ShopItemRepository;
 import ch.Elodin.RealmQuill.repository.shop.ShopRepository;
+import ch.Elodin.RealmQuill.repository.world.ItemRepository;
 import ch.Elodin.RealmQuill.service.shop.ShopItemService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,7 +50,7 @@ public class ShopItemServiceTest {
                 dummyItem // eingebettetes ItemDTO
         );
 
-        // Mock-EntitÃ¤ten vorbereiten
+        // Mock-Entitäten vorbereiten
         Shop mockShop = new Shop();
         mockShop.setShopId(1);
 
@@ -72,7 +72,7 @@ public class ShopItemServiceTest {
 
         // Ergebnisse prÃ¼fen
         assertEquals(1, result.size());
-        ShopItemDTO resultItem = result.get(0);
+        ShopItemDTO resultItem = result.getFirst();
         assertEquals(1, resultItem.getShopId());
         assertEquals(100, resultItem.getItemId());
         assertEquals(5, resultItem.getQuantity());

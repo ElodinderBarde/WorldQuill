@@ -6,12 +6,12 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "npc_kleidungsqualitÃƒÂ¤t")
+@Table(name = "npc_kleidungsqualität")
 public class KleidungQuali {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "npc_kleidungsqualitÃƒÂ¤t_ID")
+    @Column(name = "npc_kleidungsqualität_ID")
     private int kleidungsQuali;
 
     @Column(name = "description", unique = true)

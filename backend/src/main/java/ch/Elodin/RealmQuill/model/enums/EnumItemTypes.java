@@ -9,7 +9,7 @@ public enum EnumItemTypes {
     Other,
     Books,
     Zutaten,
-    TrÃƒÂ¤nke,
+    Tränke,
     Edelsteine,
-    KunstgegenstÃƒÂ¤nde
+    Kunstgegenstände
 }
