@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import {useNpcNavigation} from "@/service/hooks/useNpcNavigation.js";
 
 export default function ShopEmployees({ shopId }) {
     const [employees, setEmployees] = useState([]);
+    const { handleNpcDoubleClick } = useNpcNavigation();
+
 
     useEffect(() => {
-        if (!shopId) return;
+        if (!shopId || shopId === "undefined") return;
         axios.get(`http://localhost:8081/api/shops/${shopId}/employees`)
             .then(response => setEmployees(response.data))
             .catch(error => console.error("Fehler beim Laden der Mitarbeitenden:", error));
@@ -19,7 +22,14 @@ export default function ShopEmployees({ shopId }) {
             ) : (
                 <ul className="npc-list">
                     {employees.map(emp => (
-                        <li key={emp.id}>
+                        <li
+                            key={emp.npcId}
+                            onDoubleClick={() => {
+                                console.log(`Doppel-Klick auf NPC mit ID: ${emp.npcId}`);
+                                handleNpcDoubleClick(emp.npcId);
+                            }}
+                            style={{ cursor: "pointer" }}
+                        >
                             <details>
                                 <summary>{emp.firstname} {emp.lastname}</summary>
                                 <p>Geschlecht: {emp.gender}</p>

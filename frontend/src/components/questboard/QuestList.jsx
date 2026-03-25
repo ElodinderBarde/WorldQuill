@@ -8,7 +8,7 @@ export default function QuestList({ onOpenNote, reloadTrigger, onReload, filters
 
 
     useEffect(() => {
-        fetch("http://localhost:8081/api/Quest")
+        fetch("http://localhost:8081/api/quest")
             .then(res => res.json())
             .then(data => setQuests(data));
     }, [reloadTrigger]);

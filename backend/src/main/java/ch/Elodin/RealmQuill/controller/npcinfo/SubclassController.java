@@ -4,10 +4,8 @@ import ch.Elodin.RealmQuill.controller.GenericController;
 import ch.Elodin.RealmQuill.model.npcinfo.Subclass;
 import ch.Elodin.RealmQuill.repository.npcinfo.SubclassRepository;
 import java.util.List;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+@CrossOrigin(origins = "http://localhost:5137")
 
 @RestController
 @RequestMapping("/api/Subclass") // Basis-URL fÃ¼r diesen Controller
@@ -22,10 +20,10 @@ public class SubclassController extends GenericController<Subclass, Integer> {
 
     public record SubclassDTO(Integer id, String name) {}
 
-    @GetMapping("/names/byClass")
+    @GetMapping("/names/byClass/{npcClass}")
     public List<SubclassDTO> getSubclassNamesByClass(@RequestParam String npcClass) {
         return subclassRepository.findByClassname(npcClass).stream()
-                .map(sc -> new SubclassDTO(sc.getSubclass_ID(), sc.getSubclassname()))
+                .map(sc -> new SubclassDTO(sc.getId(), sc.getSubclassname()))
                 .toList();
     }
 }

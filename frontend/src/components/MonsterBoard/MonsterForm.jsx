@@ -1,22 +1,27 @@
+// MonsterForm.jsx
+
 import { useState, useEffect } from 'react';
 import { createMonster, getMonsterBooks } from "@/service/monsterAPI.js";
 
-function MonsterForm() {
+const EMPTY_FORM = {
+    name:         '',
+    challengeLvl: '',
+    schlagwort:   '',
+    book:         '',
+    page1:        '',
+    page2:        '',
+    page3:        '',
+    shiftable:    0,
+    favorit:      0,
+    description:  ''
+};
 
-    const [form, setForm] = useState({
-        name: '',
-        challengeLvl: '',
-        schlagwort: '',
-        book: '',
-        page1: '',
-        page2: '',
-        page3: '',
-        shiftable: 0,
-        favorit: 0,
-        description: ''
-    });
+export default function MonsterForm({ onCreated }) {
 
-    const [books, setBooks] = useState([]);
+    const [form,     setForm]     = useState(EMPTY_FORM);
+    const [books,    setBooks]    = useState([]);
+    const [feedback, setFeedback] = useState(null);
+    const [loading,  setLoading]  = useState(false);
 
     useEffect(() => {
         getMonsterBooks()
@@ -26,150 +31,113 @@ function MonsterForm() {
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-
-        let val = value;
-
-        if (type === 'checkbox') {
-            val = checked ? 1 : 0;
-        }
-
         setForm(prev => ({
             ...prev,
-            [name]: val
+            [name]: type === 'checkbox' ? (checked ? 1 : 0) : value
         }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
+        setFeedback(null);
 
         try {
-            const payload = {
+            await createMonster({
                 ...form,
                 challengeLvl: form.challengeLvl ? parseFloat(form.challengeLvl) : null,
-                page1: form.page1 ? parseInt(form.page1) : null,
-                page2: form.page2 ? parseInt(form.page2) : null,
-                page3: form.page3 ? parseInt(form.page3) : null,
-            };
-
-            await createMonster(payload);
-
-            alert('Monster erfolgreich erstellt!');
-
-            setForm({
-                name: '',
-                challengeLvl: '',
-                schlagwort: '',
-                book: '',
-                page1: '',
-                page2: '',
-                page3: '',
-                shiftable: 0,
-                favorit: 0,
-                description: ''
+                page1:        form.page1        ? parseInt(form.page1)          : null,
+                page2:        form.page2        ? parseInt(form.page2)          : null,
+                page3:        form.page3        ? parseInt(form.page3)          : null,
             });
+
+            setForm(EMPTY_FORM);
+            setFeedback({ type: "success", text: "Monster erfolgreich erstellt." });
+            onCreated?.();
 
         } catch (err) {
             console.error(err);
-            alert('Fehler beim Erstellen.');
+            setFeedback({ type: "error", text: "Fehler beim Erstellen." });
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
-        <form onSubmit={handleSubmit} autoComplete="off" className="monster-form">
+        <form onSubmit={handleSubmit} autoComplete="off" className="board-form">
+
+            <label>Name</label>
+            <input name="name" value={form.name} onChange={handleChange} />
+
+            <label>Herausforderungsgrad</label>
+            <input
+                type="number"
+                step="0.1"
+                name="challengeLvl"
+                value={form.challengeLvl}
+                onChange={handleChange}
+            />
+
+            <label>Schlagwort</label>
+            <input name="schlagwort" value={form.schlagwort} onChange={handleChange} />
+
+            <label>Buch</label>
+            <select name="book" value={form.book} onChange={handleChange}>
+                <option value="">-- Quelle wählen --</option>
+                {books.map(b => (
+                    <option key={b} value={b}>{b}</option>
+                ))}
+            </select>
+
+            <label>Seite 1</label>
+            <input type="number" name="page1" value={form.page1} onChange={handleChange} />
+
+            <label>Seite 2</label>
+            <input type="number" name="page2" value={form.page2} onChange={handleChange} />
+
+            <label>Seite 3</label>
+            <input type="number" name="page3" value={form.page3} onChange={handleChange} />
 
             <label>
-                Name:
-                <input name="name" value={form.name} onChange={handleChange} />
-            </label>
-
-            <br />
-
-            <label>
-                Herausforderungsgrad:
-                <input type="number" step="0.1" name="challengeLvl" value={form.challengeLvl} onChange={handleChange} />
-            </label>
-
-            <br />
-
-            <label>
-                Schlagwort:
-                <input name="schlagwort" value={form.schlagwort} onChange={handleChange} />
-            </label>
-
-            <br />
-
-            <label>
-                Buch:
-                <select name="book" value={form.book} onChange={handleChange}>
-                    <option value="">-- Quelle wählen --</option>
-                    {books.map((b) => (
-                        <option key={b} value={b}>{b}</option>
-                    ))}
-                </select>
-            </label>
-
-            <br />
-
-            <label>
-                Seite 1:
-                <input type="number" name="page1" value={form.page1} onChange={handleChange} />
-            </label>
-
-            <br />
-
-            <label>
-                Seite 2:
-                <input type="number" name="page2" value={form.page2} onChange={handleChange} />
-            </label>
-
-            <br />
-
-            <label>
-                Seite 3:
-                <input type="number" name="page3" value={form.page3} onChange={handleChange} />
-            </label>
-
-            <br />
-
-            <label>
-                Shiftable:
+                Shiftable
                 <input
                     type="checkbox"
                     name="shiftable"
                     checked={form.shiftable === 1}
                     onChange={handleChange}
+                    style={{ width: "auto", marginLeft: "8px" }}
                 />
             </label>
 
-            <br />
-
             <label>
-                Favorit:
+                Favorit
                 <input
                     type="checkbox"
                     name="favorit"
                     checked={form.favorit === 1}
                     onChange={handleChange}
+                    style={{ width: "auto", marginLeft: "8px" }}
                 />
             </label>
 
-            <br />
+            <label>Beschreibung</label>
+            <textarea
+                name="description"
+                value={form.description}
+                onChange={handleChange}
+                rows={4}
+            />
 
-            <label>
-                Beschreibung:
-                <br />
-                <textarea
-                    name="description"
-                    value={form.description}
-                    onChange={handleChange}
-                />
-            </label>
+            {feedback && (
+                <p style={{ color: feedback.type === "success" ? "#6fcf97" : "#eb5757" }}>
+                    {feedback.text}
+                </p>
+            )}
 
-            <br />
+            <button type="submit" disabled={loading}>
+                {loading ? "Wird erstellt..." : "Erstellen"}
+            </button>
 
-            <button type="submit">Erstellen</button>
         </form>
     );
 }
-
-export default MonsterForm;

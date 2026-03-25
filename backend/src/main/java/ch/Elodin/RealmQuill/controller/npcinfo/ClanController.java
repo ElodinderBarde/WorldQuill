@@ -6,12 +6,9 @@ import ch.Elodin.RealmQuill.mapper.ClanMapper;
 import ch.Elodin.RealmQuill.model.Clan;
 import ch.Elodin.RealmQuill.repository.world.ClanRepository;
 import java.util.List;
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.web.bind.annotation.*;
 
-
+@CrossOrigin(origins = "http://localhost:5137")
 @RestController
 @RequestMapping("/api/clan")
 public class ClanController {
@@ -45,10 +42,11 @@ public class ClanController {
 
     @GetMapping("/NonFamilienclans")
     public List<ClanDTO> getNonFamilienclans() {
-        return clanRepository.findAllNonFamilienclans()
+        List<ClanDTO> list = clanRepository.findAllNonFamilienclans()
                 .stream()
                 .map(ClanMapper::toClanDTO)
                 .toList();
+        return list;
     }
 
     @PostMapping("/createClan")

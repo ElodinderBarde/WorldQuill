@@ -15,7 +15,7 @@ export default function ShopTypeList({ locationId, onSelect }) {
     }, []);
 
     function handleSelect(type) {
-        setActiveTypeId(type.id);
+        setActiveTypeId(type.shopTypeId);
         onSelect(type);
     }
 
@@ -24,7 +24,7 @@ export default function ShopTypeList({ locationId, onSelect }) {
             items={shopTypes}
             activeId={activeTypeId}
             onSelect={handleSelect}
-            getId={(t) => t.id}
+            getId={(t) => t.shopTypeId}
             getLabel={(t) => t.name}
         />
     );

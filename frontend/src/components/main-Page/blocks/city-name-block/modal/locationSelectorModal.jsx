@@ -1,10 +1,19 @@
 "use client";
 import { Separator } from "@/components/ui/separator";
-import { DialogContent } from "@/components/ui/dialog";
 
 import { useEffect, useState } from "react";
 import { IconMapPin } from "@tabler/icons-react";
 
+import {
+    Dialog,
+    DialogContent,
+    DialogTitle,        // neu
+    DialogDescription,  // neu
+} from "@/components/ui/dialog";
+
+
+
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import {
     Command,
     CommandDialog,
@@ -26,6 +35,9 @@ export function CommandMenu01({ open, setOpen, onSelectLocation }) {
         setOpen(false);
     };
 
+
+
+
     useEffect(() => {
         async function loadLocations() {
             const locations = await getLocation();
@@ -37,12 +49,16 @@ export function CommandMenu01({ open, setOpen, onSelectLocation }) {
 
     return (
         <CommandDialog open={open} onOpenChange={setOpen}>
-            <DialogContent
-                className="max-w-[900px] w-[90vw] h-[80vh] p-4"
-            >
-                <Command className="h-full flex flex-col">
+            <VisuallyHidden>
+                <DialogTitle>Ortschaft auswählen</DialogTitle>
+                <DialogDescription>
+                    Suche und wähle eine Stadt oder ein Dorf aus.
+                </DialogDescription>
+            </VisuallyHidden>
+            <DialogContent className="overflow-hidden p-0 w-[90vw] max-w-[900px] max-h-[80vh]">
+            <Command className="flex h-full w-full flex-col">
+                <CommandInput placeholder="Stadt oder Dorf suchen…" className="border-b mb-3" />
 
-                    {/* sauberer Abstand nach oben */}
                     <div className="pt-6"  />
 
                    <br/>
@@ -88,11 +104,8 @@ export function CommandMenu01({ open, setOpen, onSelectLocation }) {
                             </CommandGroup>
                         </CommandList>
                     </div>
-
-                </Command>
+            </Command>
             </DialogContent>
         </CommandDialog>
-
-
-    );
+);
 }

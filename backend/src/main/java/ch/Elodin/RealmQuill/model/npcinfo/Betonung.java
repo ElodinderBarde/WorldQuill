@@ -1,52 +1,15 @@
 package ch.Elodin.RealmQuill.model.npcinfo;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-
-@Entity
-@Table(name = "npc_betonung")
+@Getter @Setter @NoArgsConstructor
+@Entity @Table(name = "npc_accent")
 public class Betonung {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "npc_betonung_id")
-    private int betonung_ID;
-
-    
-    @Column(name = "betonung", unique = true)
-    private String betonung;
-
-
-	public int getBetonung_ID() {
-		return betonung_ID;
-	}
-
-
-	public void setBetonung_ID(int betonung_ID) {
-		this.betonung_ID = betonung_ID;
-	}
-
-
-	public String getBetonung() {
-		return betonung;
-	}
-
-
-	public void setBetonung(String betonung) {
-		this.betonung = betonung;
-	}
-
-
-	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
-    
-
-
-
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+    @Column(name = "name", unique = true)
+    private String name;
+    // Kompatibilität mit NpcMapper.getBetonung()
+    public String getBetonung() { return name; }
 }

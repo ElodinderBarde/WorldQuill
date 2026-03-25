@@ -58,9 +58,9 @@ export function getMonsterBooks() {
 }
 
 export function getMonsterHerausforderungsgrade() {
-    return apiFetch(`${API_URL}/herausforderungsgrade`);
+    return apiFetch(`${API_URL}/challenge-ratings`);
 }
 
 export function getMonsterSchlagworte() {
-    return apiFetch(`${API_URL}/schlagworte`);
+    return apiFetch(`${API_URL}/keywords`);
 };

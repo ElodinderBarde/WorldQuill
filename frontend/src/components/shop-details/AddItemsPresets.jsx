@@ -31,8 +31,8 @@ export default function AddItemsPreset({ onClose, shopId }) {
 
         preset.items.forEach(setting => {
             const filtered = allItems.filter(item => {
-                const typMatch = setting.typ ? item.typ?.toLowerCase() === setting.typ.toLowerCase() : true;
-                const rarityMatch = setting.rarity ? item.seltenheit?.toLowerCase() === setting.rarity.toLowerCase() : true;
+                const typMatch = setting.typ ? item.item_type?.toLowerCase() === setting.item_type.toLowerCase() : true;
+                const rarityMatch = setting.rarity ? item.rarity?.toLowerCase() === setting.rarity.toLowerCase() : true;
                 return typMatch && rarityMatch;
             });
 

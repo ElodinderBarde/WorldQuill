@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react';
+// MonsterResourceFilter.jsx
+
+import { useEffect, useState, useRef } from 'react';
 import {
     getMonsterBooks,
     getMonsterHerausforderungsgrade,
@@ -8,114 +10,84 @@ import {
 export default function MonsterResourceFilter({ onFilterChange }) {
 
     const [filters, setFilters] = useState({
-        buch: '',
-        herausforderungsgrad: '',
-        schlagwort: '',
-        sort: ''
+        source_book:                 '',
+        challenge_rating: '',
+        keyword:           '',
+        sort:                 ''
     });
 
-    const [books, setBooks] = useState([]);
-    const [challengeLvls, setChallengeLvls] = useState([]);
-    const [schlagworte, setSchlagworte] = useState([]);
+    const [sourceBook,         setSourceBook]         = useState([]);
+    const [challengeRating, setChallengeRating] = useState([]);
+    const [keyword,   setKeyword]   = useState([]);
 
-    // =========================
-    // LOAD FILTER DATA
-    // =========================
+    const isMounted = useRef(false);
+
     useEffect(() => {
         getMonsterBooks()
-            .then(setBooks)
+            .then(setSourceBook)
             .catch(err => console.error("Fehler Bücher:", err));
 
         getMonsterHerausforderungsgrade()
-            .then(setChallengeLvls)
+            .then(setChallengeRating)
             .catch(err => console.error("Fehler HG:", err));
 
         getMonsterSchlagworte()
-            .then(setSchlagworte)
+            .then(setKeyword)
             .catch(err => console.error("Fehler Schlagworte:", err));
     }, []);
 
-    // =========================
-    // FILTER TRIGGER
-    // =========================
     useEffect(() => {
+        if (!isMounted.current) {
+            isMounted.current = true;
+            return;
+        }
         onFilterChange?.(filters);
     }, [filters, onFilterChange]);
 
-    const handleFilterChange = (e) => {
+    const handleChange = (e) => {
         const { name, value } = e.target;
-        setFilters(prev => ({
-            ...prev,
-            [name]: value
-        }));
+        setFilters(prev => ({ ...prev, [name]: value }));
     };
 
-    // =========================
-    // HELPER: UNIQUE + SORT
-    // =========================
-    const uniqueSorted = (arr) => {
-        return [...new Set(arr || [])]
+    const uniqueSorted = (arr) =>
+        [...new Set(arr || [])]
             .filter(v => v != null)
-            .sort((a, b) => {
-
-                // Zahlen sortieren
-                if (!isNaN(a) && !isNaN(b)) {
-                    return Number(a) - Number(b);
-                }
-
-                // Strings sortieren
-                return String(a).localeCompare(String(b), undefined, { sensitivity: 'base' });
-            });
-    };
+            .sort((a, b) =>
+                !isNaN(a) && !isNaN(b)
+                    ? Number(a) - Number(b)
+                    : String(a).localeCompare(String(b), undefined, { sensitivity: "base" })
+            );
 
     return (
-        <div className="monster-filter">
+        <div className="board-filter">
             <h4>Filter</h4>
 
-            {/* BUCH */}
-            <label>Buch:</label>
-            <select name="buch" value={filters.buch} onChange={handleFilterChange}>
+            <label>Buch</label>
+            <select name="source_book" value={filters.source_book} onChange={handleChange}>
                 <option value="">Alle</option>
-                {uniqueSorted(books).map((b) => (
+                {uniqueSorted(sourceBook).map(b => (
                     <option key={b} value={b}>{b}</option>
                 ))}
             </select>
 
-            <br />
-
-            {/* HG */}
-            <label>Herausforderungsgrad:</label>
-            <select
-                name="herausforderungsgrad"
-                value={filters.herausforderungsgrad}
-                onChange={handleFilterChange}
-            >
+            <label>Herausforderungsgrad</label>
+            <select name="challenge_rating" value={filters.challenge_rating} onChange={handleChange}>
                 <option value="">Alle</option>
-                {uniqueSorted(challengeLvls).map((hg) => (
+                {uniqueSorted(challengeRating).map(hg => (
                     <option key={hg} value={hg}>{hg}</option>
                 ))}
             </select>
 
-            <br />
-
-            {/* SCHLAGWORT */}
-            <label>Schlagwort:</label>
-            <select
-                name="schlagwort"
-                value={filters.schlagwort}
-                onChange={handleFilterChange}
-            >
+            <label>Schlagwort</label>
+            <select name="keyword" value={filters.keyword} onChange={handleChange}>
                 <option value="">Alle</option>
-                {uniqueSorted(schlagworte).map((s) => (
+                {uniqueSorted(keyword).map(s => (
                     <option key={s} value={s}>{s}</option>
                 ))}
             </select>
 
-            <br />
-
-            {/* SORT */}
-            <label>Sortierung:</label>
-            <select name="sort" value={filters.sort} onChange={handleFilterChange}>
+            <label>Sortierung</label>
+            <select name="sort" value={filters.sort} onChange={handleChange}>
                 <option value="">Keine</option>
                 <option value="alpha-asc">A–Z</option>
                 <option value="alpha-desc">Z–A</option>

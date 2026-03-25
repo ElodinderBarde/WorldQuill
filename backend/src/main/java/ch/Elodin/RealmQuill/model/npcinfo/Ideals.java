@@ -1,42 +1,13 @@
 package ch.Elodin.RealmQuill.model.npcinfo;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-
-@Entity
-@Table(name = "npc_ideals")
+@Getter @Setter @NoArgsConstructor
+@Entity @Table(name = "npc_ideal")
 public class Ideals {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "npc_ideals_ID")
-    private int ideals;
-
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
     @Column(name = "description", unique = true)
     private String description;
-
-	public int getIdeals() {
-		return ideals;
-	}
-
-	public void setIdeals(int ideals) {
-		this.ideals = ideals;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-    
-    
-
 }

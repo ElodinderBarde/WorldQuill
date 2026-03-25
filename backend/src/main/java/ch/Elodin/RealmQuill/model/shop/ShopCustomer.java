@@ -1,22 +1,13 @@
 package ch.Elodin.RealmQuill.model.shop;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-
-@Getter
-@Setter
-@Entity
-@Table(name = "shop_customer")
+@Getter @Setter @NoArgsConstructor
+@Entity @Table(name = "shop_customer")
 public class ShopCustomer {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "shop_customer_ID")
-    private Integer shop_customer_ID; // Feldname anpassen
-
-
+    private int id;
     @Column(name = "position")
     private String position;
-
 }

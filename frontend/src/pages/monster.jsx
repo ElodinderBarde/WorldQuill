@@ -1,9 +1,9 @@
 // monster.jsx
 
 import Navbar                from '../components/navbar';
-import MonsterResourceFilter from '@/components/MonsterBoard/MonsterResourceFilter.jsx';
-import MonsterList           from "@/components/MonsterBoard/MonsterList.jsx";
 import MonsterForm           from "@/components/MonsterBoard/MonsterForm.jsx";
+import MonsterResourceFilter from '@/components/MonsterBoard/MonsterResourceFIlter.jsx';
+import MonsterList           from "@/components/MonsterBoard/MonsterList.jsx";
 import MonsterDetail         from "@/components/MonsterBoard/MonsterDetail.jsx";
 import PdfModal              from "@/components/pdfViewer/pdfModal.jsx";
 import PdfViewer             from "@/components/pdfViewer/pdfViewer.jsx";
@@ -13,9 +13,9 @@ import { useEffect, useState, useCallback } from 'react';
 import { getMonsters }                      from '../service/monsterAPI.js';
 
 // =========================
-// ADAPTER - ausserhalb der Komponente definiert
-// damit React bei jedem Render dieselbe Referenz
-// sieht und kein Remount ausgelöst wird
+// ADAPTER
+// ausserhalb der Komponente →
+// stabile Referenz, kein Remount
 // =========================
 function MonsterListAdapter({ data, onSelect, onDoubleClick }) {
     return (
@@ -27,9 +27,6 @@ function MonsterListAdapter({ data, onSelect, onDoubleClick }) {
     );
 }
 
-// onOpenPdf kann nicht direkt übergeben werden da
-// BoardLayout die Props von DetailComponent nicht kennt.
-// Lösung: detailProps wird genutzt um onOpenPdf durchzureichen
 function MonsterDetailAdapter({ data, onOpenPdf }) {
     return (
         <MonsterDetail
@@ -47,6 +44,8 @@ export default function Monster() {
     const [allMonsters,      setAllMonsters]      = useState([]);
     const [filteredMonsters, setFilteredMonsters] = useState([]);
     const [selectedMonster,  setSelectedMonster]  = useState(null);
+    const [loading,          setLoading]          = useState(true);
+    const [error,            setError]            = useState(null);
     const [showPdf,          setShowPdf]          = useState(false);
     const [pdfMonster,       setPdfMonster]       = useState(null);
 
@@ -74,45 +73,64 @@ export default function Monster() {
     // DATEN LADEN
     // =========================
     useEffect(() => {
+        setLoading(true);
+        setError(null);
+
         getMonsters()
             .then(data => {
                 if (Array.isArray(data)) {
                     setAllMonsters(data);
                     setFilteredMonsters(data);
                 } else {
-                    console.error("Ungültige Datenstruktur:", data);
+                    setError("Ungültige Datenstruktur vom Server.");
                 }
             })
-            .catch(console.error);
+            .catch(() => setError("Monster konnten nicht geladen werden."))
+            .finally(() => setLoading(false));
     }, []);
 
     // =========================
     // FILTER + SORT
     // =========================
+// monster.jsx - handleFilterChange
+
     const handleFilterChange = useCallback(({
-                                                buch,
-                                                herausforderungsgrad,
-                                                schlagwort,
+                                                source_book,
+                                                challenge_rating,
+                                                keyword,
                                                 sort
                                             }) => {
         let result = [...allMonsters];
 
-        if (buch)                 result = result.filter(m => m?.book === buch);
-        if (herausforderungsgrad) result = result.filter(m => m?.challengeLvl == herausforderungsgrad);
-        if (schlagwort)           result = result.filter(m => m?.schlagwort?.includes(schlagwort));
+        if (source_book)
+            result = result.filter(m => m.sourceBook === source_book);
+
+        if (challenge_rating)
+            result = result.filter(m =>
+                String(m.challengeRating) === String(challenge_rating)
+            );
+
+        if (keyword)
+            result = result.filter(m => m.keyword?.includes(keyword));
 
         switch (sort) {
             case "alpha-asc":  result.sort((a, b) => a.name.localeCompare(b.name));    break;
             case "alpha-desc": result.sort((a, b) => b.name.localeCompare(a.name));    break;
-            case "hg-asc":     result.sort((a, b) => a.challengeLvl - b.challengeLvl); break;
-            case "hg-desc":    result.sort((a, b) => b.challengeLvl - a.challengeLvl); break;
-            case "favoriten":  result.sort((a, b) => b.favorit - a.favorit);           break;
+            case "hg-asc":     result.sort((a, b) => a.challengeRating - b.challengeRating); break;
+            case "hg-desc":    result.sort((a, b) => b.challengeRating - a.challengeRating); break;
+            case "favoriten":  result.sort((a, b) => b.favorit   - a.favorit);         break;
             case "shiftable":  result.sort((a, b) => b.shiftable - a.shiftable);       break;
         }
 
         setFilteredMonsters(result);
-    }, [allMonsters]);
 
+        // Selektion zurücksetzen wenn das selektierte
+        // Monster nicht mehr in der gefilterten Liste ist
+        setSelectedMonster(prev =>
+            prev && result.some(m => m.id === prev.id) ? prev : null
+        );
+
+    }, [allMonsters]);
     // =========================
     // SELECT / DESELECT
     // =========================
@@ -145,13 +163,16 @@ export default function Monster() {
                     onFilterChange: handleFilterChange
                 }}
                 detailProps={{
-                    onOpenPdf: openPdf  // via detailProps durchgereicht
+                    onOpenPdf: openPdf
                 }}
 
                 data={filteredMonsters}
                 selected={selectedMonster}
                 onSelect={handleSelect}
                 onDoubleClick={handleDeselect}
+
+                loading={loading}
+                error={error}
             />
         </>
     );

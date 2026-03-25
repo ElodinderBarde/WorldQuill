@@ -1,18 +1,15 @@
 package ch.Elodin.RealmQuill.controller.npcinfo;
 import ch.Elodin.RealmQuill.dto.NpcWriteDTO;
 import ch.Elodin.RealmQuill.service.NpcService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-
 import org.springframework.web.bind.annotation.*;
+@CrossOrigin(origins = "http://localhost:5137")
 @RestController
 @RequestMapping("/api/npcs/write")
+@RequiredArgsConstructor
 public class NpcWriteController {
-
     private final NpcService npcService;
-
-    public NpcWriteController(NpcService npcService) {
-        this.npcService = npcService;
-    }
 
     @PostMapping
     public ResponseEntity<?> createNpc(@RequestBody NpcWriteDTO dto) {
@@ -26,6 +23,3 @@ public class NpcWriteController {
         return ResponseEntity.ok().build();
     }
 }
-
-
-

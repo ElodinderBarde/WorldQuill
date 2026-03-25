@@ -1,3 +1,5 @@
+// BoardLayout.jsx
+
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import "./Board.css";
@@ -15,6 +17,8 @@ export default function BoardLayout({
                                         selected    = null,
                                         onSelect,
                                         onDoubleClick,
+                                        loading     = false,
+                                        error       = null,
                                     }) {
     const formRef   = useRef(null);
     const filterRef = useRef(null);
@@ -33,12 +37,33 @@ export default function BoardLayout({
         if (detailRef.current) setDetailNode(detailRef.current);
     }, []);
 
-    // Komponenten als Variablen damit ESLint
-    // sie als "verwendet" erkennt
     const Form   = FormComponent;
     const Filter = FilterComponent;
     const List   = ListComponent;
     const Detail = DetailComponent;
+
+    // =========================
+    // LOADING / ERROR
+    // ersetzt nur den Listen-Bereich,
+    // Form und Filter bleiben bedienbar
+    // =========================
+    const renderList = () => {
+        if (loading) {
+            return (
+                <div className="board-state-overlay">
+                    <span className="board-state-text">Laden...</span>
+                </div>
+            );
+        }
+        if (error) {
+            return (
+                <div className="board-state-overlay">
+                    <span className="board-state-text board-state-error">{error}</span>
+                </div>
+            );
+        }
+        return null;
+    };
 
     return (
         <>
@@ -53,7 +78,11 @@ export default function BoardLayout({
                     className="board-cell board-cell-list"
                     style={{ flex: selected ? "5" : "9" }}
                     ref={listRef}
-                />
+                >
+                    {/* Loading/Error inline im List-Container
+                        Portal rendert nur wenn kein Fehler/Loading */}
+                    {renderList()}
+                </div>
 
                 <div
                     className={`board-cell board-cell-detail${selected ? " detail-active" : ""}`}
@@ -65,7 +94,9 @@ export default function BoardLayout({
 
             {formNode   && createPortal(<Form   {...formProps}   />, formNode)}
             {filterNode && createPortal(<Filter {...filterProps} />, filterNode)}
-            {listNode   && createPortal(
+
+            {/* Liste nur rendern wenn kein Loading/Error */}
+            {listNode && !loading && !error && createPortal(
                 <List
                     {...listProps}
                     data={data}
@@ -74,6 +105,7 @@ export default function BoardLayout({
                 />,
                 listNode
             )}
+
             {detailNode && createPortal(
                 <Detail
                     {...detailProps}
@@ -83,4 +115,4 @@ export default function BoardLayout({
             )}
         </>
     );
-};
+}

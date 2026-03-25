@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:8081/api/Quest";
+const API_BASE_URL = "http://localhost:8081/api/quest";
 
 
 
@@ -8,7 +8,7 @@ export async function getActiveQuests() {
     return res.json();
 }
 export async function updateQuestNotes(questId, notes) {
-    const res = await fetch(`http://localhost:8081/api/Quest/${questId}/notes`, {
+    const res = await fetch(`http://localhost:8081/api/quest/${questId}/notes`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",

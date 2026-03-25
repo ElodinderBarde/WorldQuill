@@ -7,14 +7,14 @@ export default function ItemForm() {
   const [item, setItem] = useState({
     name: '',
     price: 0,
-    typ: '', // Start leer, wird über Dropdown gesetzt
-    seltenheit: '',
-    buch: '',
-    seite1: null,
-    seite2: null,
-    seite3: null,
-    einstimmung: 'N', // Start mit Ja
-    beschreibung: ''
+    itemType: '', // Start leer, wird über Dropdown gesetzt
+    rarity: '',
+    sourceBook: '',
+    page1: null,
+    page2: null,
+    page3: null,
+    attunement: 'N', // Start mit Ja
+    description: ''
   });
 
   const [resources, setResources] = useState([]);
@@ -71,7 +71,7 @@ export default function ItemForm() {
     try {
         await createItem(item);
         alert('Item erfolgreich erstellt!');
-        setItem({ ...item, name: '', beschreibung: '' }); // Reset
+        setItem({ ...item, name: '', description: '' }); // Reset
     } catch (err) {
       console.error(err);
       alert('Fehler beim Erstellen.');
@@ -97,12 +97,12 @@ export default function ItemForm() {
       <br />
       <label>
         Seltenheit:
-      <input type="text" name="seltenheit" value={item.rarity} onChange={handleChange} />
+      <input type="text" name="rarity" value={item.rarity} onChange={handleChange} />
       </label>
       <br />
       <label>
         Typ:
-          <select name="typ" value={item.typ} onChange={handleChange}>
+          <select name="itemType" value={item.itemType} onChange={handleChange}>
               <option value="">Alle</option>
 
               {safeSortedTypes().map((type) => (
@@ -125,7 +125,7 @@ export default function ItemForm() {
       <br />
 <label>
   Buch:
-  <select name="buch" value={item.buch} onChange={handleChange}>
+  <select name="sourceBook" value={item.sourceBook} onChange={handleChange}>
     <option value="">-- Quelle wählen --</option>
     {resources.map((r, index) => (
       <option key={index} value={r}>
@@ -138,7 +138,7 @@ export default function ItemForm() {
 
       <label>
         Buchseite:
-        <input type="number" name="seite1" value={item.seite1 || ''} onChange={handleChange} />
+        <input type="number" name="page1" value={item.page1|| ''} onChange={handleChange} />
       </label>
       <br /><br />
       <fieldset>
@@ -146,9 +146,9 @@ export default function ItemForm() {
         <label>
           <input
             type="radio"
-            name="einstimmung"
+            name="attunement"
             value="Y"
-            checked={item.einstimmung === 'Y'}
+            checked={item.attunement === 'Y'}
             onChange={handleChange}
           />
           Ja
@@ -156,9 +156,9 @@ export default function ItemForm() {
         <label>
           <input
             type="radio"
-            name="einstimmung"
+            name="attunement"
             value="N"
-            checked={item.einstimmung === 'N'}
+            checked={item.attunement === 'N'}
             onChange={handleChange}
           />
           Nein
@@ -170,8 +170,8 @@ export default function ItemForm() {
         <br/>
         <textarea
   className="beschreibungTB"
-  name="beschreibung"
-  value={item.beschreibung}
+  name="description"
+  value={item.description}
   onChange={handleChange}
 />
 

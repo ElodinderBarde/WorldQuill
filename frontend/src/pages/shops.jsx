@@ -14,6 +14,12 @@ import { getShops } from "../service/shopsAPI";
 export default function ShopPage() {
     const gridRef = useRef(null);
     const gridInstance = useRef(null);
+    const notesWidgetProps = {
+        "gs-x": "0",
+        "gs-y": "4",
+        "gs-w": "6",
+        "gs-h": "4"
+    };
     const [shops, setShops] = useState([]);
     const [selectedCity, setSelectedCity] = useState("");
     const [selectedType, setSelectedType] = useState(null);
@@ -100,13 +106,7 @@ export default function ShopPage() {
 
                 <ShopCreate />
 
-                <div
-                    className="grid-stack-item"
-                    gs-x="0"
-                    gs-y="4"
-                    gs-w="6"
-                    gs-h="4"
-                >
+                <div className="grid-stack-item" {...notesWidgetProps}>
                     <div className="grid-stack-item-content ">
                         {selectedShop ? (
                             <ShopNotes

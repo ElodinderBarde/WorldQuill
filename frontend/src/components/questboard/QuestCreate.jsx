@@ -23,7 +23,7 @@ export default function QuestCreate() {
             .then(res => setLocations(res.data))
             .catch(err => console.error(err));
 
-        axios.get('/api/Quest')
+        axios.get('/api/quest')
             .then(res => setPreviousQuests(res.data))
             .catch(err => console.error(err));
     }, []);
@@ -37,7 +37,7 @@ export default function QuestCreate() {
     };
 
     const handleSave = () => {
-        axios.post('/api/Quest/create', quest)
+        axios.post('/api/quest/create', quest)
             .then(() => {
                 alert('Quest erfolgreich gespeichert');
                 setQuest({

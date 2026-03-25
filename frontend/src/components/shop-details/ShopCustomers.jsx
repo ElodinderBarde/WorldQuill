@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import {useNpcNavigation} from "@/service/hooks/useNpcNavigation.js";
 
 export default function ShopCustomers({ shopId }) {
     const [customers, setCustomers] = useState([]);
+    const {handleNpcDoubleClick} = useNpcNavigation();
 
     useEffect(() => {
-        if (!shopId) return;
+        if (!shopId || shopId === "undefined") return;
         axios.get(`http://localhost:8081/api/shops/${shopId}/customers`)
             .then(response => setCustomers(response.data))
             .catch(error => console.error("Fehler beim Laden der Kunden:", error));
@@ -19,7 +21,15 @@ export default function ShopCustomers({ shopId }) {
             ) : (
                 <ul className="npc-list">
                     {customers.map(cus => (
-                        <li key={cus.id}>
+                        <li key={cus.npcId}
+                            onDoubleClick={() => {
+
+                                console.log(`Doppel-Klick auf NPC mit ID: ${cus.npcId}`)
+                                handleNpcDoubleClick(cus.npcId)}}
+
+                        style = {{cursor: "pointer"}}
+
+                        >
                             <details>
                                 <summary>{cus.firstname} {cus.lastname}</summary>
                                 <p>Geschlecht: {cus.gender}</p>

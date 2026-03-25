@@ -1,48 +1,36 @@
 package ch.Elodin.RealmQuill.controller.world;
-
 import ch.Elodin.RealmQuill.repository.world.LocationRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-@RequestMapping("/api/locations")
+@CrossOrigin(origins = "http://localhost:5137")
+@RestController @RequestMapping("/api/locations") @RequiredArgsConstructor
 public class LocationController {
-
-    @Autowired
-    private LocationRepository locationRepository;
-
-
+    private final LocationRepository locationRepository;
     @GetMapping
     public List<LocationDTO> getAllLocations() {
         return locationRepository.findAll().stream()
-                .map(loc -> new LocationDTO(
-                        loc.getId(),
-                        loc.getCityID() != null ? loc.getCityID().getCity_name() : null,
-                        loc.getVillageID() != null ? loc.getVillageID().getName() : null
-                ))
-                .toList();
+            .map(loc -> new LocationDTO(loc.getId(),
+                loc.getCity() != null ? loc.getCity().getCityName() : null,
+                loc.getVillage() != null ? loc.getVillage().getName() : null))
+            .toList();
     }
-
-    public record LocationDTO(int locationId, String cityName, String villageName) {
-    }
-
-
     @GetMapping("/cities")
     public List<CityDTO> getCities() {
         return locationRepository.findAll().stream()
-                .filter(loc -> loc.getCityID() != null)
-                .map(loc -> new CityDTO(loc.getId(), loc.getCityID().getCity_name()))
-                .toList();
+            .filter(loc -> loc.getCity() != null)
+            .map(loc -> new CityDTO(loc.getId(), loc.getCity().getCityName()))
+            .toList();
     }
-
-    // Inneres DTO oder eigene Datei
-    public record CityDTO(int id, String city_name) {
+    @GetMapping("/byCampaign/{campaignId}")
+    public List<LocationDTO> getByCampaign(@PathVariable int campaignId) {
+        return locationRepository.findByCampaignId(campaignId).stream()
+            .map(loc -> new LocationDTO(loc.getId(),
+                loc.getCity() != null ? loc.getCity().getCityName() : null,
+                loc.getVillage() != null ? loc.getVillage().getName() : null))
+            .toList();
     }
-
-
+    public record LocationDTO(int locationId, String cityName, String villageName) {}
+    public record CityDTO(int id, String cityName) {}
 }
-
-

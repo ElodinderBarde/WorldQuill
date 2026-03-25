@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import AddItems from "./AddItems.jsx";
 import AddItemsPreset from "./AddItemsPresets.jsx";
-export default function ShopItems() {
-    const { shopId } = useParams();
+export default function ShopItems({ shopId }) {
     const [shopItems, setShopItems] = useState([]);
     const [expandedIndex, setExpandedIndex] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -12,9 +10,13 @@ export default function ShopItems() {
     const [showPreset, setShowPreset] = useState(false);
 
 
-    console.log("Inventory for shopId:", shopId);
-
     const fetchShopItems = async () => {
+        if (!shopId || shopId === "undefined") {
+            setShopItems([]);
+            setLoading(false);
+            return;
+        }
+
         try {
             setLoading(true);
             const response = await fetch(`http://localhost:8081/api/shopItems/shop/${shopId}`);
@@ -37,7 +39,7 @@ export default function ShopItems() {
     };
 
     useEffect(() => {
-        if(!shopId) return;
+        if (!shopId || shopId === "undefined") return;
         fetchShopItems();
     }, [shopId]);
 
@@ -97,10 +99,15 @@ export default function ShopItems() {
     };
 
 
+    useEffect(() => {
+        if (!shopId || shopId === "undefined") return;
+        fetchShopItems();
+    }, [shopId]);
+
     const openFormsElement = () => setShowAddItems(true);
     const closeFormsElement = () => {
         setShowAddItems(false);
-        fetchShopItems(); // Refresh direkt nach dem Schließen
+        fetchShopItems();
     };
 
     if (loading) {

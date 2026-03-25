@@ -1,19 +1,12 @@
 package ch.Elodin.RealmQuill.dto;
+import lombok.*;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class StatsDTO {
-
-    private Integer strength;
-    private Integer dexterity;
-    private Integer constitution;
-    private Integer intelligence;
-    private Integer wisdom;
-    private Integer charisma;
+    private int strength;
+    private int dexterity;
+    private int constitution;
+    private int intelligence;
+    private int wisdom;
+    private int charisma;
 }
-
-
-

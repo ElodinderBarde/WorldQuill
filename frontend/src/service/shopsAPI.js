@@ -1,13 +1,7 @@
 // src/api/shopApi.js
 
-const API_URL = 'http://localhost:8081/api/shops';
-
-//  Alle Shops laden
-export async function getShops() {
-  const response = await fetch(API_URL);
-  if (!response.ok) throw new Error('Fehler beim Laden der Shops');
-  return await response.json();
-}
+const BASE_URL = 'http://localhost:8081/';
+const API_URL = `${BASE_URL}api/shops`;
 
 // Neuen Shop erstellen
 export async function createShop(shop) {
@@ -34,9 +28,31 @@ export async function getCities() {
     if (!res.ok) throw new Error("Fehler beim Laden der Städte");
     return await res.json();
   }
-  //Filter nach ShopTyp
-  export async function getShopTypes() {
-    const res = await fetch("http://localhost:8081/api/ShopType");
-    if (!res.ok) throw new Error("Fehler beim Laden der Shoptypen");
-    return await res.json();
-  }
+
+
+
+
+
+function mapShop(shop) {
+    return {
+        id:           shop.shopId  ?? shop.id          ?? null,
+        name:         shop.name,
+        notes:        shop.notes   ?? null,
+        shopTypeId:   shop.shopType?.id   ?? shop.shopTypeId   ?? null,
+        shopTypeName: shop.shopType?.name ?? shop.shopTypeName ?? null,
+        locationId:   shop.location?.id   ?? shop.locationId   ?? null,
+        cityName:     shop.location?.city?.cityName ?? shop.cityName ?? null,
+        villageName:  shop.location?.village?.name  ?? shop.villageName ?? null,
+        campaignId:   shop.campaign?.id ?? shop.campaignId ?? null,
+    };
+}
+
+export const getShops = () =>
+    fetch(`${API_URL}`)
+        .then(res => res.json())
+        .then(data => Array.isArray(data) ? data.map(mapShop) : []);
+
+export const getShopTypes = () =>
+    fetch(`${BASE_URL}api/ShopType`)
+        .then(res => res.json())
+        .then(data => Array.isArray(data) ? data : []);

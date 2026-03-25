@@ -1,19 +1,9 @@
 package ch.Elodin.RealmQuill.dto;
-
 import ch.Elodin.RealmQuill.model.enums.EnumSymbol;
+import lombok.*;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
-@ToString
-@Data
-@Getter
-@Setter
-
+@Data @NoArgsConstructor
 public class NpcWriteDTO {
-
     private Integer npc_ID;
     private Integer firstnameId;
     private Integer lastnameId;
@@ -46,23 +36,16 @@ public class NpcWriteDTO {
     private Integer haircolorId;
     private Integer beardstyleId;
     private String notes;
-
-
-
-    private Integer level;
     private Integer strength;
     private Integer dexterity;
     private Integer constitution;
     private Integer intelligence;
     private Integer wisdom;
     private Integer charisma;
-
-    private Integer shopRelation;
     private Integer shopEmployeeRole;
     private Integer shopCustomerRole;
     private Integer shopId;
     private Integer family;
     private EnumSymbol symbol;
+    private Integer campaignId;
 }
-
-

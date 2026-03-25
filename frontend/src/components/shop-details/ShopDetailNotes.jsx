@@ -7,6 +7,13 @@ export default function ShopDetailNotes({ shopId }) {
 
     // Laden der Notizen beim Mount
     useEffect(() => {
+        if (!shopId || shopId === "undefined") {
+            setNote("");
+            setOriginalNote("");
+            setIsLoading(false);
+            return;
+        }
+
         const fetchNotes = async () => {
             try {
                 const response = await fetch(`http://localhost:8081/api/shops/${shopId}`);
@@ -44,6 +51,10 @@ export default function ShopDetailNotes({ shopId }) {
 
     // Speichern der Notiz in die DB
     const handleSave = async () => {
+        if (!shopId || shopId === "undefined") {
+            return;
+        }
+
         try {
             const response = await fetch(`http://localhost:8081/api/shops/${shopId}`, {
                 method: "PUT",

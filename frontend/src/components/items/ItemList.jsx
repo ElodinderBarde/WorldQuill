@@ -18,8 +18,8 @@ export default function ItemList({ items, onSelect, onItemDoubleClick }) {
           style={{cursor: 'pointer'}}
         >
             <td><strong>{item.name}</strong></td>
-          <td>{item.typ ?? "-"}</td>
-          <td>{item.seltenheit ?? "-"}</td>
+      <td>{item.itemType ?? "-"}</td>
+          <td>{item.rarity ?? "-"}</td>
           <td>{item.price ?? "-"}</td>
         </tr>
       ))}

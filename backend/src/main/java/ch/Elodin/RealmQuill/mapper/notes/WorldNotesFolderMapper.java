@@ -1,0 +1,49 @@
+package ch.Elodin.RealmQuill.mapper.notes;
+
+import ch.Elodin.RealmQuill.dto.notes.*;
+import ch.Elodin.RealmQuill.model.notes.WorldNotesFolder;
+import ch.Elodin.RealmQuill.model.notes.WorldNotesNote;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+
+import java.util.List;
+
+@Mapper(componentModel = "spring")
+public interface WorldNotesFolderMapper {
+
+    // ENTITY -> READ DTO
+    @Mapping(target = "parentId", source = "parentFolder.id")
+    @Mapping(target = "categoryId", source = "category.id")
+    FolderReadDTO toReadDTO(WorldNotesFolder entity);
+
+    List<FolderReadDTO> toReadDTOs(List<WorldNotesFolder> entities);
+
+    // WRITE DTO -> ENTITY (Basisdaten)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "parentFolder", ignore = true)
+    @Mapping(target = "category", ignore = true)
+    @Mapping(target = "children", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "version", ignore = true)
+    @Mapping(target = "notes", ignore = true)
+    WorldNotesFolder toEntity(FolderWriteDTO dto);
+
+
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "title", source = "title")
+    @Mapping(target = "content", source = "content")
+    @Mapping(target = "folderId", source = "folder.id")
+    @Mapping(target = "updatedAt", source = "updatedAt")
+    NoteListDTO toListDTO(WorldNotesNote note);
+
+
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "parentId", source = "parentFolder.id")
+    FolderMoveDTO toMoveDTO(WorldNotesFolder entity);
+
+    @Mapping(target = "name", source = "name")
+    FolderRenameDTO toRenameDTO(WorldNotesFolder entity);
+
+}

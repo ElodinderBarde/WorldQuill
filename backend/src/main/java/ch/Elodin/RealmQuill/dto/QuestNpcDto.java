@@ -1,19 +1,12 @@
 package ch.Elodin.RealmQuill.dto;
+import lombok.*;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
-@Data
+@Getter @Setter @NoArgsConstructor
 public class QuestNpcDto {
     private int questNpcId;
     private int npcId;
-    private String npcName; // optional
+    private String npcName;
     private int questId;
-    private String questName; // optional
+    private String questName;
     private String function;
 }
-
-

@@ -31,7 +31,7 @@ public class ShopItemService {
      * Gibt alle Items eines Shops als DTO-Liste zurÃ¼ck.
      */
     public List<ShopItemDTO> getItemsByShopId(Integer shopId) {
-        return shopItemRepository.findByShop_ShopId(shopId).stream()
+        return shopItemRepository.findByShopId(shopId).stream()
                 .map(ShopItemMapper::toDTO)
                 .toList();
     }

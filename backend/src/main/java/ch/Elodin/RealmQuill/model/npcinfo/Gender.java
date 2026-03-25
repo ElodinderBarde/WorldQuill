@@ -1,25 +1,13 @@
 package ch.Elodin.RealmQuill.model.npcinfo;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-
-
-@Getter
-@Setter
-@Entity
-@Table(name = "npc_gender")
+@Getter @Setter @NoArgsConstructor
+@Entity @Table(name = "npc_gender")
 public class Gender {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "npc_gender_ID")
-    private int gender_ID;
-
-    
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
     @Column(name = "npc_gender")
     private String gendername;
-
-
-
 }

@@ -1,22 +1,16 @@
 package ch.Elodin.RealmQuill.dto;
+import lombok.*;
 
-
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
+@Getter @Setter @NoArgsConstructor
 public class QuestCreateDTO {
-    public String questname;
-    public String description;
-    public String group;
-    public String price_item;
-    public int price_gold;
-    public boolean is_active;
-    public String status;
-    public int questlocationId;
-    public Integer previousQuestId;
-    public String notes;
+    private String questname;
+    private String description;
+    private String group;
+    private String priceItem;
+    private int priceGold;
+    private boolean isActive;
+    private String status;
+    private int questlocationId;
+    private Integer previousQuestId;
+    private String notes;
 }
-
-

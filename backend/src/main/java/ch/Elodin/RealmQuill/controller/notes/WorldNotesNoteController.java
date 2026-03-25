@@ -1,0 +1,87 @@
+package ch.Elodin.RealmQuill.controller.notes;
+
+import ch.Elodin.RealmQuill.dto.notes.*;
+import ch.Elodin.RealmQuill.service.notes.WorldNotesNoteService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/notes")
+@RequiredArgsConstructor
+public class WorldNotesNoteController {
+
+    private final WorldNotesNoteService noteService;
+
+    @PostMapping
+    public ResponseEntity<NoteReadDTO> create(@RequestBody NoteWriteDTO dto) {
+        return ResponseEntity.ok(noteService.create(dto));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<NoteReadDTO> update(
+            @PathVariable Long id,
+            @RequestBody NoteWriteDTO dto) {
+        return ResponseEntity.ok(noteService.updateNote(id, dto));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<NoteListDTO>> getAll() {
+        return ResponseEntity.ok(noteService.getAllNotes());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<NoteReadDTO> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(noteService.getById(id));
+    }
+
+
+
+    @GetMapping("/folder/{folderId}")
+    public ResponseEntity<List<NoteListDTO>> getAllInFolder(@PathVariable Long folderId) {
+        return ResponseEntity.ok(noteService.getAllInFolder(folderId));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        noteService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<NoteRenameDTO> rename(
+            @PathVariable Long id,
+            @RequestBody NoteRenameDTO dto
+    ) {
+        return ResponseEntity.ok(noteService.renameNote(id, dto));
+
+        }
+
+
+        @PatchMapping("/{id}/move")
+    public ResponseEntity<NoteMoveDTO> move(
+            @PathVariable Long id,
+            @RequestBody NoteMoveDTO dto
+    ) {
+            return ResponseEntity.ok(noteService.moveNote(id, dto));
+        }
+
+
+
+
+    @GetMapping("/by-title/{title}")
+    public ResponseEntity<NoteReadDTO> getByTitle(
+            @PathVariable String title
+    ) {
+        return noteService
+                .findByTitleAndUser(title)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+
+
+
+}

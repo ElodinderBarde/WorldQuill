@@ -1,61 +1,28 @@
 package ch.Elodin.RealmQuill.model;
-
-import ch.Elodin.RealmQuill.model.enums.Familienclan;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
-
-@Entity
-@Table(name = "items")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Entity @Table(name = "items")
 public class Item {
-
-	@Id
-	@JsonProperty("id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "itemID")
-	private int itemID;
-
-	@Column(name = "itemName")
-	private String itemName;
-
-	@Column(name = "price")
-	private int price;
-
-	@Column(name = "Typ")
-	private String typ;
-
-	@Column(name = "seltenheit")
-	private String seltenheit;
-
-	@Column(name = "buch")
-	private String buch;
-
-	@Column(name = "seite1")
-	private Integer seite1;
-
-	@Column(name = "seite2")
-	private Integer seite2;
-
-	@Column(name = "seite3")
-	private Integer seite3;
-
-	@Column(name = "einstimmung")
-	@Enumerated(EnumType.STRING)
-	private Familienclan einstimmung;
-
-	@Column(name = "beschreibung")
-	private String beschreibung;
-
-	// Falls ein Mapper getId() benÃ¶tigt:
-	public int getId() {
-		return this.itemID;
-	}
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
+    @Column(name = "item_name")
+    private String itemName;
+    @Column(name = "price")
+    private int price;
+    @Column(name = "item_type")
+    private String itemType;
+    @Column(name = "rarity")
+    private String rarity;
+    @Column(name = "source_book")
+    private String sourceBook;
+    @Column(name = "page_1") private Integer page1;
+    @Column(name = "page_2") private Integer page2;
+    @Column(name = "page_3") private Integer page3;
+    @Column(name = "attunement", columnDefinition = "ENUM('Y','N')")
+    private String attunement;
+    @Column(name = "description")
+    private String description;
 }

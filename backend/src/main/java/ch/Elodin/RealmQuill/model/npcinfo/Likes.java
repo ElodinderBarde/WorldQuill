@@ -1,44 +1,13 @@
 package ch.Elodin.RealmQuill.model.npcinfo;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-
-@Entity
-@Table(name = "npc_likes")
+@Getter @Setter @NoArgsConstructor
+@Entity @Table(name = "npc_like")
 public class Likes {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "npc_likes_ID")
-    private int likes_ID;
-
-    
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
     @Column(name = "description", unique = true)
     private String description;
-
-
-	public int getLikes_ID() {
-		return likes_ID;
-	}
-
-
-	public void setLikes_ID(int likes_ID) {
-		this.likes_ID = likes_ID;
-	}
-
-
-	public String getDescription() {
-		return description;
-	}
-
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-
-
-
-
 }

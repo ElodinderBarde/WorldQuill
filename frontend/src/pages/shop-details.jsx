@@ -10,12 +10,11 @@ import ShopCustomers from "../components/shop-details/ShopCustomers.jsx";
 import ShopDetail from "../components/shop-details/ShopDetails.jsx";
 import ShopDetailNotes from "../components/shop-details/ShopDetailNotes.jsx";
 
-
 export default function ShopDetails() {
     const { shopId } = useParams();
+    const resolvedShopId = shopId && shopId !== "undefined" ? shopId : null;
     const gridRef = useRef(null);
     const gridInstance = useRef(null);
-
 
     useLayoutEffect(() => {
         const timer = setTimeout(() => {
@@ -25,86 +24,50 @@ export default function ShopDetails() {
                 cellHeight: 100,
                 disableResize: true,
                 disableDrag: true,
-
             }, gridRef.current);
             gridInstance.current = grid;
-
             console.log(grid.save());
         }, 0);
 
         return () => clearTimeout(timer);
     }, []);
 
-
-
-
     return (
-
         <>
-
             <Navbar />
             <main style={{ padding: '1rem' }}>
                 <div className="grid-stack" ref={gridRef}>
-
-                    {/* Shop Detail */}
-                    <div id="shopDetail" className="grid-stack-item"
-                         gs-x="0"
-                        gs-y="0"
-                         gs-w="4"
-                         gs-h="2">
+                    <div id="shopDetail" className="grid-stack-item" gs-x="0" gs-y="0" gs-w="4" gs-h="2">
                         <div className="grid-stack-item-content">
-                            <ShopDetail />
+                            <ShopDetail shopId={resolvedShopId} />
                         </div>
                     </div>
 
-                    {/* Shop Items */}
-                    <div id="shopItems" className="grid-stack-item"
-                         gs-x="4"
-                         gs-y="0"
-                         gs-w="6"
-                         gs-h="9">
+                    <div id="shopItems" className="grid-stack-item" gs-x="4" gs-y="0" gs-w="6" gs-h="9">
                         <div className="grid-stack-item-content">
-                            <ShopItems />
+                            <ShopItems shopId={resolvedShopId} />
                         </div>
                     </div>
 
-                    {/* Shop Employees */}
-                    <div id="shopEmployees" className="grid-stack-item"
-                         gs-x="0"
-                         gs-y="10"
-                         gs-w="4"
-                         gs-h="3">
+                    <div id="shopEmployees" className="grid-stack-item" gs-x="0" gs-y="10" gs-w="4" gs-h="3">
                         <div className="grid-stack-item-content">
-                            <ShopEmployees shopId={shopId} />
+                            <ShopEmployees shopId={resolvedShopId} />
                         </div>
                     </div>
 
-                    {/* Shop Customers */}
-                    <div id="shopCustomers" className="grid-stack-item"
-                         gs-x="10"
-                         gs-y="0"
-                         gs-w="2"
-                         gs-h="9">
+                    <div id="shopCustomers" className="grid-stack-item" gs-x="10" gs-y="0" gs-w="2" gs-h="9">
                         <div className="grid-stack-item-content">
-                            <ShopCustomers shopId={shopId} />
+                            <ShopCustomers shopId={resolvedShopId} />
                         </div>
                     </div>
 
-                    {/* Shop Detail Notes */}
-                    <div id="ShopNotes" className="grid-stack-item"
-                         gs-x="0"
-                         gs-y="6"
-                         gs-w="4"
-                         gs-h="4">
-
+                    <div id="ShopNotes" className="grid-stack-item" gs-x="0" gs-y="6" gs-w="4" gs-h="4">
                         <div className="grid-stack-item-content">
-                            <ShopDetailNotes shopId={shopId} />
+                            <ShopDetailNotes shopId={resolvedShopId} />
                         </div>
                     </div>
-
                 </div>
             </main>
         </>
     );
-
 }

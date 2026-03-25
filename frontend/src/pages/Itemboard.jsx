@@ -71,13 +71,13 @@ export default function Itemboard() {
   // =========================
   // FILTER + SORT
   // =========================
-  const handleFilterChange = useCallback(({ buch, typ, seltenheit, sort }) => {
+  const handleFilterChange = useCallback(({ sourceBook, itemType, rarity, sort }) => {
     let result = [...allItems];
 
-    if (buch)      result = result.filter(item => item?.buch === buch);
-    if (typ)       result = result.filter(item => item?.typ  === typ)
+    if (sourceBook)      result = result.filter(item => item?.sourceBook === sourceBook);
+    if (itemType)       result = result.filter(item => item?.itemType  === itemType)
         .sort((a, b) => a.name.localeCompare(b.name));
-    if (seltenheit) result = result.filter(item => item?.seltenheit === seltenheit);
+    if (rarity) result = result.filter(item => item?.rarity === rarity);
 
     switch (sort) {
       case "price-asc":  result.sort((a, b) => a.price - b.price);               break;

@@ -1,12 +1,7 @@
 package ch.Elodin.RealmQuill.dto;
+import lombok.*;
 
-
-
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
+@Getter @Setter @NoArgsConstructor
 public class NpcFilterRequest {
     private String search;
     private String race;
@@ -18,11 +13,5 @@ public class NpcFilterRequest {
     private Boolean hasShop;
     private String symbol;
     private Integer locationId;
-
-
-
-
+    private Integer campaignId;
 }
-
-
-

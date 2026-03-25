@@ -3,13 +3,13 @@ import { getItemRarities, getItemResources, getItemTypes } from '../../service/i
 
 export default function ResourceFilter({ onFilterChange }) {
     const [filters, setFilters] = useState({
-        buch: '',
-        typ: '',
-        seltenheit: '',
+        sourceBook: '',
+        itemType: '',
+        rarity: '',
         sort: '',
     });
     const [resources, setResources] = useState([]);
-    const [types, setTypes] = useState([]);
+    const [itemTypes, setTypes] = useState([]);
     const [rarities, setRarities] = useState([]);
 
     useEffect(() => {
@@ -46,7 +46,7 @@ export default function ResourceFilter({ onFilterChange }) {
     };
 
     const safeSortedTypes = () => {
-        return types
+        return itemTypes
             .filter((t) => t != null)
             .slice()
             .sort((a, b) => String(a).localeCompare(String(b)));
@@ -55,8 +55,8 @@ export default function ResourceFilter({ onFilterChange }) {
     return (
         <div className="resource-filter">
             <h4>Filter</h4>
-            <label>Buch:</label>
-            <select name="buch" value={filters.buch} onChange={handleFilterChange}>
+            <label>Buch: </label>
+            <select name="sourceBook" value={filters.sourceBook} onChange={handleFilterChange}>
                 <option value="">Alle</option>
                 {resources.map((r, i) => (
                     <option key={i} value={r}>
@@ -65,18 +65,18 @@ export default function ResourceFilter({ onFilterChange }) {
                 ))}
             </select>
             <br />
-            <label>Typ:</label>
-            <select name="typ" value={filters.typ} onChange={handleFilterChange}>
+            <label>Typ: </label>
+            <select name="itemType" value={filters.itemType} onChange={handleFilterChange}>
                 <option value="">Alle</option>
-                {safeSortedTypes().map((type) => (
-                    <option key={type} value={type}>
-                        {type}
+                {safeSortedTypes().map((itemType) => (
+                    <option key={itemType} value={itemType}>
+                        {itemType}
                     </option>
                 ))}
             </select>
             <br />
-            <label>Seltenheit:</label>
-            <select name="seltenheit" value={filters.seltenheit} onChange={handleFilterChange}>
+            <label>Seltenheit: </label>
+            <select name="rarity" value={filters.rarity} onChange={handleFilterChange}>
                 <option value="">Alle</option>
                 {rarities.map((rarity) => (
                     <option key={rarity} value={rarity}>
@@ -85,7 +85,7 @@ export default function ResourceFilter({ onFilterChange }) {
                 ))}
             </select>
             <br />
-            <label>Sortierung:</label>
+            <label>Sortierung: </label>
             <select name="sort" value={filters.sort} onChange={handleFilterChange}>
                 <option value="">None</option>
                 <option value="price-asc">Price Ascending</option>

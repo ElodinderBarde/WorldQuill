@@ -1,44 +1,15 @@
 package ch.Elodin.RealmQuill.model.npcinfo;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-
-@Entity
-@Table(name = "npc_level")
+@Getter @Setter @NoArgsConstructor
+@Entity @Table(name = "npc_level")
 public class Level {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "npc_lvl_ID")
-    private int lvl;
-
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
     @Column(name = "lvl_value", unique = true)
-    private Integer lvlvalue;
-
-	public int getLvl() {
-		return lvl;
-	}
-
-	public void setLvl(int lvl) {
-		this.lvl = lvl;
-	}
-
-	public Integer getLvlvalue() {
-		return lvlvalue;
-	}
-
-	public void setLvl_value(Integer lvlvalue) {
-		this.lvlvalue = lvlvalue;
-	}
-
-	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-    
-    
-    
+    private Integer lvl;
+    // Kompatibilität mit NpcMapper Level::getLvl
+    public Integer getLvl() { return lvl; }
 }
-
-    
