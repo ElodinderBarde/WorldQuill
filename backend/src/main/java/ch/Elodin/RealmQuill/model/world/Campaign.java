@@ -10,6 +10,10 @@ public class Campaign {
     private int id;
     @Column(name = "campaign_name")
     private String campaignName;
+
+    @Column (name = "user_id")
+    private int userId;
+
     @Column(name = "app_user_id")
     private Long appUserId;
 }

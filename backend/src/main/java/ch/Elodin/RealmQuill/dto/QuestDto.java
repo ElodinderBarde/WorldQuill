@@ -15,4 +15,5 @@ public class QuestDto {
     private String notes;
     private boolean active;
     private int previousQuestId;
+    private int campaignId;
 }

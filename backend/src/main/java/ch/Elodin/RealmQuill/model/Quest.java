@@ -25,7 +25,7 @@ public class Quest {
 	private int questID;
 
 	@Column(name = "questname")
-	private String MonsterName;
+	private String QuestName;
 
 	@Column(name = "description")
 	private String description;
@@ -72,4 +72,6 @@ public class Quest {
 	@ManyToOne
 	@JoinColumn(name = "campaign_ID")
 	private Campaign campaign;
-}
+
+	}
+

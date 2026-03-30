@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../../../utils/api.js";
-import { isAuthenticated } from "../../../../utils/authService.js";
+//import { isAuthenticated } from "../../../../utils/authService.js";
 import FolderNode from "./FolderNode.jsx";
 
 
@@ -12,7 +12,7 @@ export default function FolderTree({
 
         const [tree, setTree] = useState([]);
         const [selectedFolderId, setSelectedFolderId] = useState(null);
-
+        const [collapseTrigger, setCollapseTrigger] = useState(0);
         const [contextMenu, setContextMenu] = useState(null);
 
     async function loadTree() {
@@ -152,13 +152,16 @@ export default function FolderTree({
         return (
             <div className="folder-tree-container">
                 <div className="folder-tree-header">Folders</div>
+                <button onClick={() => setCollapseTrigger((v) => v + 1)}>Alles einklappen</button>
 
                 <div className="folder-tree-scroll">
                     {tree.map(root => (
-                        <FolderNode
-                            key={root.id}
-                            node={root}
+                        root.children?.map(child => (
+                            <FolderNode
+                            key={child.id}
+                            node={child}
                             depth={0}
+                            collapseTrigger={collapseTrigger}
                             onFolderSelect={handleFolderSelect}
                             onNoteSelect={handleNoteSelect}
                             onMoveFolder={handleMoveFolder}
@@ -167,6 +170,7 @@ export default function FolderTree({
                             selectedFolderId={selectedFolderId}
                             selectedNoteId={selectedNoteId}
                         />
+                    ))
                     ))}
                 </div>
 
@@ -187,6 +191,8 @@ export default function FolderTree({
             </div>
         );
     }
+
+
 
 
 

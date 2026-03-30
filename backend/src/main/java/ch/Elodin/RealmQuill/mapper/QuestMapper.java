@@ -8,7 +8,7 @@ public class QuestMapper {
     public static QuestDto toDto(Quest quest) {
         QuestDto dto = new QuestDto();
         dto.setQuestID(quest.getQuestID());
-        dto.setQuestName(quest.getMonsterName());
+        dto.setQuestName(quest.getQuestName());
         dto.setDescription(quest.getDescription());
         dto.setStatus(quest.getStatus());
         dto.setGroup(quest.getGroup());
@@ -18,6 +18,7 @@ public class QuestMapper {
         dto.setActive(quest.isActive());
         dto.setPreviousQuestId(quest.getPreviousQuest() != null ? quest.getPreviousQuest().getQuestID() : 0);
         Location loc = quest.getQuestlocation();
+        dto.setCampaignId(quest.getCampaign().getId());
         if (loc != null) {
             if (loc.getCity() != null) dto.setLocationName(loc.getCity().getCityName());
             else if (loc.getVillage() != null) dto.setLocationName(loc.getVillage().getName());
@@ -26,7 +27,7 @@ public class QuestMapper {
     }
     public static Quest toEntity(QuestCreateDTO dto) {
         Quest quest = new Quest();
-        quest.setMonsterName(dto.getQuestname());
+        quest.setQuestName(dto.getQuestname());
         quest.setDescription(dto.getDescription());
         quest.setGroup(dto.getGroup());
         quest.setPrice_gold(dto.getPriceGold());
@@ -34,6 +35,7 @@ public class QuestMapper {
         quest.setActive(dto.isActive());
         quest.setStatus(EnumQuest.fromString(dto.getStatus()));
         quest.setNotes(dto.getNotes());
+        quest.setCampaign(dto.getCampaign());
         return quest;
     }
 

@@ -1,5 +1,5 @@
 // QuestFilter.jsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function QuestFilter({ onFilterChange }) {
     const [filters, setFilters] = useState({
@@ -9,6 +9,40 @@ export default function QuestFilter({ onFilterChange }) {
         ort: "",
         status: ""
     });
+    const [questNames, setQuestNames] = useState([]);
+    const [locations, setLocations] = useState([]);
+
+    useEffect(() => {
+        fetch("http://localhost:8081/api/quest")
+            .then((res) => res.json())
+            .then((data) => {
+                const getLocation = (q) =>
+                    q.locationName || q.questlocation?.cityID?.city_name || q.questlocation?.villageID?.village_name || "";
+
+                const names = Array.from(
+                    new Set(
+                        data
+                            .map((q) => q.questName || q.questname || q.monsterName)
+                            .filter((name) => typeof name === "string" && name.trim() !== "")
+                    )
+                ).sort((a, b) => a.localeCompare(b));
+
+                const uniqueLocations = Array.from(
+                    new Set(
+                        data
+                            .map((q) => getLocation(q))
+                            .filter((location) => typeof location === "string" && location.trim() !== "")
+                    )
+                ).sort((a, b) => a.localeCompare(b));
+
+                setQuestNames(names);
+                setLocations(uniqueLocations);
+            })
+            .catch(() => {
+                setQuestNames([]);
+                setLocations([]);
+            });
+    }, []);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -22,11 +56,18 @@ export default function QuestFilter({ onFilterChange }) {
 
     return (
         <div className="quest-filter-container">
-            <h4>🔎 Questfilter</h4>
+            <h4> Questfilter</h4>
 
             <div className="form-group-inline">
                 <label>Name:</label>
-                <input type="text" name="name" value={filters.name} onChange={handleChange} />
+                <select name="name" value={filters.name} onChange={handleChange}>
+                    <option value="">Alle</option>
+                    {questNames.map((questName) => (
+                        <option key={questName} value={questName}>
+                            {questName}
+                        </option>
+                    ))}
+                </select>
             </div>
 
             <div className="form-group-inline">
@@ -39,9 +80,17 @@ export default function QuestFilter({ onFilterChange }) {
                 <input type="text" name="gruppe" value={filters.gruppe} onChange={handleChange} />
             </div>
 
+            <br/>
             <div className="form-group-inline">
                 <label>Ort:</label>
-                <input type="text" name="ort" value={filters.ort} onChange={handleChange} />
+                <select name="ort" value={filters.ort} onChange={handleChange}>
+                    <option value="">Alle</option>
+                    {locations.map((location) => (
+                        <option key={location} value={location}>
+                            {location}
+                        </option>
+                    ))}
+                </select>
             </div>
 
             <div className="form-group-inline">

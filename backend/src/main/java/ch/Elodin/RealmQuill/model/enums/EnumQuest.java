@@ -3,7 +3,7 @@ public enum EnumQuest {
 offen, abgeschlossen;
 
     public static EnumQuest fromString(String value) {
-        return EnumQuest.valueOf(value.trim().toUpperCase());
+        return EnumQuest.valueOf(value.trim().toLowerCase());
     }
 
 }

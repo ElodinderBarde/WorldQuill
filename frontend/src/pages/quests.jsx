@@ -17,7 +17,13 @@ export default function Quests() {
     const gridRef = useRef(null);
     const gridInstance = useRef(null);
     const [reloadTrigger, setReloadTrigger] = useState(0);
-    const [filters, setFilters] = useState({});
+    const [filters, setFilters] = useState({
+        name: "",
+        questreihe: false,
+        gruppe: "",
+        ort: "",
+        status: ""
+    });
 
 
     const handleReload = () => {

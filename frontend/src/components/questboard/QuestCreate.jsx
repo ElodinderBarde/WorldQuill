@@ -11,8 +11,10 @@ export default function QuestCreate() {
         is_active: false,
         status: 'offen',
         questlocationId: '',
+        questReihenName: '',
         previousQuestId: null,
-        notes: ''
+        notes: '',
+        campaignId: 1
     });
 
     const [locations, setLocations] = useState([]);
@@ -49,11 +51,16 @@ export default function QuestCreate() {
                     is_active: false,
                     status: 'offen',
                     questlocationId: '',
+                    questReihenName: '',
                     previousQuestId: null,
-                    notes: ''
+                    notes: '',
+                    campaignId: 1,
                 });
             })
-            .catch(err => console.error(err));
+            .catch(err => {
+                console.error(err);
+                alert('Fehler beim Speichern der Quest. Bitte versuchen Sie es erneut.');
+            });
     };
 
     return (
@@ -61,16 +68,19 @@ export default function QuestCreate() {
             <h3>Neue Quest erstellen:</h3>
 
             <div className="form-group">
+                <label>Questreihenname:</label>
+                <input type="text" name="questReihenName" value={quest.questReihenName} onChange={handleChange} />
+            </div>
+            <div className="form-group">
                 <label>Questname:</label>
                 <input type="text" name="questname" value={quest.questname} onChange={handleChange} />
             </div>
-
             <div className="form-group">
                 <label>Vorherige Quest:</label>
                 <select name="previousQuestId" value={quest.previousQuestId || ''} onChange={handleChange}>
                     <option value="">Bitte wählen...</option>
                     {previousQuests.map(q => (
-                        <option key={q.questID} value={q.questID}>{q.monsterName}</option>
+                        <option key={q.questID} value={q.questID}>{q.questName}</option>
                     ))}
                 </select>
             </div>

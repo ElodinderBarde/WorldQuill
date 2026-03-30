@@ -37,13 +37,13 @@ export default function ActiveQuestPanel({ activeQuestId, onSelectQuest }) {
             </div>
 
             <div className="quest-content">
-                <p className="quest-title">{quest.questName}</p>
+                <p className="quest-title">{quest.QuestName}</p>
 
                 <h3>Beschreibung:</h3>
                 <p>{quest.description}</p>
 
                 <div className="quest-meta">
-                    <div>Ort: {quest.locationName ?? "–"}</div>
+                    <div>Ort: {quest.questlocation?.city?.cityName ?? "–"}</div>
                     <div>Gruppe: {quest.group ?? "–"}</div>
                     <div>Gegenstände: {quest.price_item ?? "–"}</div>
                 </div>

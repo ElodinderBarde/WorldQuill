@@ -3,11 +3,13 @@ package ch.Elodin.RealmQuill.config;
 import ch.Elodin.RealmQuill.model.AppUser;
 import ch.Elodin.RealmQuill.model.Clan;
 import ch.Elodin.RealmQuill.model.Npc;
+import ch.Elodin.RealmQuill.model.Quest;
 import ch.Elodin.RealmQuill.model.enums.RoleEnum;
 import ch.Elodin.RealmQuill.model.notes.WorldNotesCategory;
 import ch.Elodin.RealmQuill.model.notes.WorldNotesFolder;
 import ch.Elodin.RealmQuill.model.notes.WorldNotesNote;
 import ch.Elodin.RealmQuill.model.shop.Shop;
+import ch.Elodin.RealmQuill.model.world.Campaign;
 import ch.Elodin.RealmQuill.model.world.City;
 import ch.Elodin.RealmQuill.model.world.Village;
 import ch.Elodin.RealmQuill.repository.Login.AppUserRepository;
@@ -16,6 +18,7 @@ import ch.Elodin.RealmQuill.repository.notes.WorldNotesFolderRepository;
 import ch.Elodin.RealmQuill.repository.notes.WorldNotesNoteRepository;
 import ch.Elodin.RealmQuill.repository.shop.ShopTypeRepository;
 import ch.Elodin.RealmQuill.repository.world.*;
+import ch.Elodin.RealmQuill.service.notes.NotesSyncService;
 import lombok.RequiredArgsConstructor;
 import org.antlr.v4.runtime.tree.pattern.ParseTreePattern;
 import org.springframework.boot.CommandLineRunner;
@@ -37,15 +40,8 @@ public class DataInitializer implements CommandLineRunner {
     private final WorldNotesFolderRepository folderRepo;
     private final WorldNotesNoteRepository noteRepo;
     private final PasswordEncoder passwordEncoder;
-    private final ShopRepository shopRepo;
+    private final NotesSyncService notesSyncService;
     private final CampaignRepository campaignRepo;
-    private final NpcRepository npcRepo;
-    private final LocationRepository locationRepo;
-    private final CityRepository cityRepo;
-    private final VillageRepository villageRepo;
-    private final ShopTypeRepository shopTypeRepo;
-        private final ClanRepository ClanRepo;
-
 
 
 
@@ -114,138 +110,16 @@ public class DataInitializer implements CommandLineRunner {
             categoryRepo.save(category);
             System.out.println(" Kategorie 'Allgemein' erstellt");
         }
-// ── FOLDER-HIERARCHIE ─────────────────────────────────────────────────────
-// Hauptordner (später ausblenden)
-        WorldNotesFolder root = getOrCreateFolder("Dein Hauptordner", user, category, null);
 
-// Kampagne
-        WorldNotesFolder kampagne = getOrCreateFolder("Kampagne", user, category, root);
-
-// Unter Kampagne
-        WorldNotesFolder weltnotizen  = getOrCreateFolder("Weltnotizen",  user, category, kampagne);
-        WorldNotesFolder npcFolder    = getOrCreateFolder("NPC",          user, category, kampagne);
-        WorldNotesFolder ortschaften  = getOrCreateFolder("Ortschaften",  user, category, kampagne);
-        WorldNotesFolder clans        = getOrCreateFolder("Clans",        user, category, kampagne);
-// Unter Ortschaften
-        WorldNotesFolder staedte  = getOrCreateFolder("Städte",  user, category, ortschaften);
-        WorldNotesFolder villages = getOrCreateFolder("Dörfer",  user, category, ortschaften);
-
-// ── CITIES: Ordner + Notes ────────────────────────────────────────────────
-        for (City city : cityRepo.findAll()) {
-            // Ordner pro Stadt
-            WorldNotesFolder cityFolder = getOrCreateFolder(city.getCityName(), user, category, staedte);
-
-            // Note aus city.getNotes() falls vorhanden
-            if (city.getNotes() != null && !city.getNotes().isBlank()) {
-                syncNote(city.getCityName(), city.getNotes(), cityFolder, user, category);
-            }
-
-            // Geschäftstypen unter der Stadt
-            List<Shop> cityShops = shopRepo.findByLocationId(city.getId());
-            Map<String, WorldNotesFolder> shopTypeFolders = new HashMap<>();
-
-            for (Shop shop : cityShops) {
-                String typeName = shop.getShopType() != null
-                        ? shop.getShopType().getName() : "Sonstige";
-
-                // Geschäftstyp-Ordner (einmalig pro Stadt)
-                AppUser finalUser = user;
-                WorldNotesCategory finalCategory = category;
-                WorldNotesFolder typeFolder = shopTypeFolders.computeIfAbsent(typeName,
-                        n -> getOrCreateFolder(n, finalUser, finalCategory, cityFolder));
-
-                // Geschäft-Ordner
-                WorldNotesFolder shopFolder = getOrCreateFolder(shop.getName(), user, category, typeFolder);
-
-                // Note aus shop.getNotes()
-                if (shop.getNotes() != null && !shop.getNotes().isBlank()) {
-                    syncNote(shop.getName(), shop.getNotes(), shopFolder, user, category);
-                }
-            }
-        }
-        // ── CLANS: Ordner + Notes + Mitglieder ───────────────────────────────────
-        WorldNotesFolder clanFolder = getOrCreateFolder("Clans", user, category, kampagne);
-
-        for (Clan clan : ClanRepo.findAll()) {
-
-            // Clan-Ordner immer erstellen
-            WorldNotesFolder thisClanFolder = getOrCreateFolder(
-                    clan.getClan(), user, category, clanFolder);
-
-            // Clan-Note nur wenn vorhanden
-            if (clan.getClanNotes() != null && !clan.getClanNotes().isBlank()) {
-                syncNote(clan.getClan(), clan.getClan(), thisClanFolder, user, category);
-            }
-
-            // Mitglieder-Unterordner immer erstellen
-            WorldNotesFolder mitgliederFolder = getOrCreateFolder(
-                    "Mitglieder", user, category, thisClanFolder);
-
-            // Alle NPCs dieses Clans
-            for (Npc npc : npcRepo.findByClanId(clan.getId())) {
-                String npcName = npc.getFirstname().getFirstname() + " "
-                        + npc.getLastname().getLastname();
-
-                // Ordner im Mitglieder-Bereich immer erstellen
-                WorldNotesFolder npcInClanFolder = getOrCreateFolder(
-                        npcName, user, category, mitgliederFolder);
-
-                // Eindeutiger Titel verhindert Kollision mit NPC-Ordner-Note
-                String noteTitle = npcName + " (Clan: " + clan.getClan() + ")";
-                boolean hasNote = npc.getNotes() != null && !npc.getNotes().isBlank();
-
-                syncNote(
-                        noteTitle,
-                        hasNote ? npc.getNotes() : "Mitglied von " + clan.getClan() +", als " + npc.getClan_position(),
-                        npcInClanFolder, user, category
-                );
-            }
-        }
-
-
-
-// ── VILLAGES: Ordner + Notes ──────────────────────────────────────────────
-        for (Village village : villageRepo.findAll()) {
-            WorldNotesFolder villageFolder = getOrCreateFolder(village.getName(), user, category, villages);
-
-            if (village.getNotes() != null && !village.getNotes().isBlank()) {
-                syncNote(village.getName(), village.getNotes(), villageFolder, user, category);
-            }
-
-            // Shops in Village (gleiche Logik wie City)
-            List<Shop> villageShops = shopRepo.findByLocationId(village.getId());
-            Map<String, WorldNotesFolder> shopTypeFolders = new HashMap<>();
-
-            for (Shop shop : villageShops) {
-                String typeName = shop.getShopType() != null
-                        ? shop.getShopType().getName() : "Sonstige";
-                AppUser finalUser1 = user;
-                WorldNotesCategory finalCategory1 = category;
-                WorldNotesFolder typeFolder = shopTypeFolders.computeIfAbsent(typeName,
-                        n -> getOrCreateFolder(n, finalUser1, finalCategory1, villageFolder));
-                WorldNotesFolder shopFolder = getOrCreateFolder(shop.getName(), user, category, typeFolder);
-                if (shop.getNotes() != null && !shop.getNotes().isBlank()) {
-                    syncNote(shop.getName(), shop.getNotes(), shopFolder, user, category);
-                }
-            }
-        }
-
-// ── NPCS: Ordner + Notes ──────────────────────────────────────────────────
-        for (Npc npc : npcRepo.findAll()) {
-            if (npc.getNotes() == null || npc.getNotes().isBlank()) continue;
-
-            String npcName = npc.getFirstname().getFirstname() + " " + npc.getLastname().getLastname();
-
-            WorldNotesFolder npcNoteFolder = getOrCreateFolder(npcName, user, category, npcFolder);
-
-            if (npc.getNotes() != null && !npc.getNotes().isBlank()) {
-                syncNote(npcName, npc.getNotes(), npcNoteFolder, user, category);
-            }
-        }
+        notesSyncService.fullSync(user);
 
 
         // DEFAULT WELCOME NOTE -------------------------------------------------
-        if (noteRepo.count() == 0) {
+        boolean welcomeExists = noteRepo.findByTitleAndUser("Willkommen in NotesHandler", user).isPresent();
+        if (!welcomeExists) {
+            WorldNotesFolder root = notesSyncService.getOrCreateFolder(
+                    "Dein Hauptordner", user, notesSyncService.getOrCreateCategory(user), null);
+
             WorldNotesNote note = new WorldNotesNote();
             note.setTitle("Willkommen in NotesHandler");
             note.setContent("""
@@ -283,7 +157,7 @@ Für weitere  Syntaxhilfe → www.markdown.de
             note.setUser(user);
             noteRepo.save(note);
 
-            System.out.println("✔ Begrüßungsnotiz erstellt");
+            System.out.println(" Begrüßungsnotiz erstellt");
         }
     }
 }

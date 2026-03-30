@@ -10,7 +10,7 @@ public class QuestNpcMapper {
         String ln = questNpc.getNpc().getLastname() != null ? questNpc.getNpc().getLastname().getLastname() : "";
         dto.setNpcName((fn + " " + ln).trim());
         dto.setQuestId(questNpc.getQuest().getQuestID());
-        dto.setQuestName(questNpc.getQuest().getMonsterName());
+        dto.setQuestName(questNpc.getQuest().getQuestName());
         dto.setFunction(questNpc.getFunction());
         return dto;
     }

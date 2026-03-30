@@ -1,5 +1,8 @@
 package ch.Elodin.RealmQuill.dto;
+import ch.Elodin.RealmQuill.model.world.Campaign;
 import lombok.*;
+
+import javax.net.ssl.SSLSession;
 
 @Getter @Setter @NoArgsConstructor
 public class QuestCreateDTO {
@@ -12,5 +15,8 @@ public class QuestCreateDTO {
     private String status;
     private int questlocationId;
     private Integer previousQuestId;
+    private Integer campaignId;
     private String notes;
+    private Campaign campaign;
+
 }

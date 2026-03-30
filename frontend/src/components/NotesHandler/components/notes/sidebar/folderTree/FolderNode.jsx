@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 
 export default function FolderNode({
                                        node,
@@ -9,7 +9,8 @@ export default function FolderNode({
                                        onMoveNote,
                                        onContextMenu,
                                        selectedFolderId,
-                                       selectedNoteId
+                                       selectedNoteId,
+                                       collapseTrigger
                                    }) {
     const [open, setOpen] = useState(true);
 
@@ -39,7 +40,12 @@ export default function FolderNode({
             onMoveNote(id, node.id);
         }
     }
-
+    useEffect(() => {
+        setOpen(false);
+    }, [collapseTrigger]);
+    
+    
+    
     return (
         <div className="folder-node">
             {/* FOLDER-HEADER */}
@@ -104,6 +110,7 @@ export default function FolderNode({
                             key={child.id}
                             node={child}
                             depth={depth + 1}
+                            collapseTrigger={collapseTrigger}
                             onFolderSelect={onFolderSelect}
                             onNoteSelect={onNoteSelect}
                             onMoveFolder={onMoveFolder}

@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import QuestFilter from "./QuestFilter.jsx";
 
-export default function QuestList({ onOpenNote, reloadTrigger, onReload, filters, setFilters }) {
+export default function QuestList({ onOpenNote, reloadTrigger, onReload, filters }) {
     const [quests, setQuests] = useState([]);
-    const [activeQuests, setActiveQuests] = useState([]);
 
 
 
@@ -16,16 +14,24 @@ export default function QuestList({ onOpenNote, reloadTrigger, onReload, filters
 // 2. Gefilterte Quests berechnen (immer bei filter-Änderung)
     const [filteredQuests, setFilteredQuests] = useState([]);
 
+    const getQuestLocationLabel = (quest) =>
+        quest.locationName || quest.questlocation?.cityID?.city_name || quest.questlocation?.villageID?.village_name || "";
+
+    const getQuestDisplayName = (quest) =>
+        quest.questName || quest.questname || quest.questName || "-";
+
     useEffect(() => {
+        const toLower = (value) => (typeof value === "string" ? value.toLowerCase() : "");
+
         const filtered = quests.filter(q => {
-            const nameMatch = !filters.name || q.monsterName.toLowerCase().includes(filters.name.toLowerCase());
-            const reiheMatch = filters.questreihe ? q.previousQuestId !== null : true;
-            const groupMatch = !filters.gruppe || q.group?.toLowerCase().includes(filters.gruppe.toLowerCase());
-            const ortMatch = !filters.ort || (
-                q.questlocation?.cityID?.city_name?.toLowerCase().includes(filters.ort.toLowerCase()) ||
-                q.questlocation?.villageID?.village_name?.toLowerCase().includes(filters.ort.toLowerCase())
-            );
-            const statusMatch = !filters.status || q.status.toLowerCase() === filters.status;
+            const questName = q.questName || q.questname || q.questName|| "";
+            const locationLabel = getQuestLocationLabel(q);
+
+            const nameMatch = !filters.name || questName === filters.name;
+            const reiheMatch = filters.questreihe ? (q.previousQuestId ?? 0) > 0 : true;
+            const groupMatch = !filters.gruppe || toLower(q.group).includes(toLower(filters.gruppe));
+            const ortMatch = !filters.ort || locationLabel === filters.ort;
+            const statusMatch = !filters.status || toLower(q.status) === toLower(filters.status);
             return nameMatch && reiheMatch && groupMatch && ortMatch && statusMatch;
         });
 
@@ -94,7 +100,7 @@ export default function QuestList({ onOpenNote, reloadTrigger, onReload, filters
                 {filteredQuests.map((quest) => (
                     <tr key={quest.questID}>
                         <td className="text-center">
-                            {quest.status.toLowerCase() !== "abgeschlossen" ? (
+                            {(quest.status || "").toLowerCase() !== "abgeschlossen" ? (
                                 <button
                                     onClick={() => handleComplete(quest.questID)}
                                     className="bg-green-500 text-white px-2 py-1 rounded hover:bg-green-600"
@@ -112,7 +118,7 @@ export default function QuestList({ onOpenNote, reloadTrigger, onReload, filters
                             )}
                         </td>
                         <td className="text-center">
-                            {quest.status.toLowerCase() !== "abgeschlossen" ? (
+                            {(quest.status || "").toLowerCase() !== "abgeschlossen" ? (
                                 <input
                                     type="checkbox"
                                     checked={quest.active}
@@ -127,11 +133,11 @@ export default function QuestList({ onOpenNote, reloadTrigger, onReload, filters
                                 <span className="text-gray-400">–</span>
                             )}
                         </td>
-                        <td>{quest.monsterName}</td>
-                        <td>{quest.questname || "-"}</td>
+                        <td>{getQuestDisplayName(quest)}</td>
+                        <td>{(quest.previousQuestId ?? 0) > 0 ? `#${quest.previousQuestId}` : "-"}</td>
                         <td>{quest.group || "-"}</td>
-                        <td>{quest.price_gold}g</td>
-                        <td>{quest.price_item || "-"}</td>
+                        <td>{quest.priceGold ?? quest.price_gold ?? 0}g</td>
+                        <td>{quest.priceItem || quest.price_item || "-"}</td>
                         <td>{quest.description}</td>
                         <td className="text-center">
                             <button
@@ -144,9 +150,7 @@ export default function QuestList({ onOpenNote, reloadTrigger, onReload, filters
                             </button>
                         </td>
                         <td>
-                            {quest.questlocation?.cityID?.city_name ||
-                                quest.questlocation?.villageID?.village_name ||
-                                "-"}
+                            {getQuestLocationLabel(quest) || "-"}
                         </td>
                     </tr>
                 ))}
