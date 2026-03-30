@@ -2,6 +2,7 @@
 package ch.Elodin.RealmQuill.model.notes;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,12 +22,13 @@ public class WorldNotesLink extends BaseEntity {
     private String linkUrl;
     private String linkText;
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "note_id", nullable = true)
     private WorldNotesNote note;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "target_note_id", nullable = true)
     private WorldNotesNote targetNote;
 

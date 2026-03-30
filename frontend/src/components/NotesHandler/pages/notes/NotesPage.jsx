@@ -5,14 +5,17 @@ import NoteEditor from "../../components/notes/noteEditor/NoteEditor.jsx";
 import { useEffect, useState } from "react";
 import api from "../../utils/api.js";
 import "./notesPage.css";
+import Navbar from "@/components/navbar.jsx";
+import {GridStack} from "gridstack";
+import {  useRef } from "react";
 
 
 export default function NotesPage() {
     const [selectedFolder, setSelectedFolder] = useState(null);
     const [selectedNote, setSelectedNote] = useState(null);
-    const [notes, setNotes] = useState([]);
     const [selectedNoteId, setSelectedNoteId] = useState(null);
-
+    const gridRef = useRef(null);
+    const gridInstance = useRef(null)
 
     async function loadNotes(id) {
 
@@ -22,10 +25,8 @@ export default function NotesPage() {
     }
 
     useEffect(() => {
-
-        loadNotes();
-
         setSelectedNoteId(null);
+        setSelectedNote(null);
     }, [selectedFolder]);
 
 
@@ -37,37 +38,63 @@ export default function NotesPage() {
             alert(`Note "${title}" nicht gefunden`);
         }
     }
+    useEffect(() => {
+        const grid = GridStack.init(
+            {
+                column: 12,
+                margin: 5,
+                cellHeight: 100,
+                staticGrid: true,
+                disableResize: true,
+                disableDrag: true,
+            },
+            gridRef.current
+        );
 
+        gridInstance.current = grid;
+    }, []);
     return (
-        <div className="notes-container">
+        <>
+            <Navbar />
+            <div ref={gridRef} className="grid-stack">
 
+                <div
+                    className="grid-stack-item"
+                    gs-x="0"
+                    gs-y="0"
+                    gs-w="3"
+                    gs-h="12"
+                >
+                    <div className="grid-stack-item-content">
+                        <Sidebar
+                            selectedFolder={selectedFolder}
+                            onSelectFolder={setSelectedFolder}
+                            onSelectNote={(id) => {
+                                setSelectedNoteId(id);
+                                loadNotes(id);
+                            }}
+                            selectedNoteId={selectedNoteId}
+                        />
+                    </div>
+                </div>
 
-            <Sidebar
-                selectedFolder={selectedFolder}
-                onSelectFolder={setSelectedFolder}
-                onSelectNote={loadNotes}
-            />
+                <div
+                    className="grid-stack-item"
+                    gs-x="3"
+                    gs-y="0"
+                    gs-w="9"
+                    gs-h="12"
+                >
+                    <div className="grid-stack-item-content">
+                        <NoteEditor
+                            note={selectedNote}
+                            refreshNotes={() => loadNotes(selectedNote?.id)}
+                            onWikiLink={openWikiLink}
+                        />
+                    </div>
+                </div>
 
-
-            {/* Aus Zeitgründen auskommentiert, diese Komponente sollte die verlinkten files zeigen */}
-
-            {/* dfgsdfg
-            <NoteList
-                notes={notes}
-                selectedId={selectedNote}
-                onSelect={setSelectedNote}
-            />
-
-            */}
-
-
-            <NoteEditor
-                note={selectedNote}
-                refreshNotes={() => loadNotes(selectedNote?.id)}
-                onWikiLink={openWikiLink}
-
-            />
-
-        </div>
+            </div>
+        </>
     );
 }

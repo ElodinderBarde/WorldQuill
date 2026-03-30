@@ -8,17 +8,19 @@ public class ShopDTO {
     private int shopTypeId;
     private String shopTypeName;
     private int locationId;
+    private String locationName;
     private String cityName;
     private String notes;
     // Neu nach DB-Migration
     private Integer campaignId;
 
-    public ShopDTO(int shopId, String name, int shopTypeId, String shopTypeName, int locationId, String cityName, int i, String notes) {
+    public ShopDTO(int shopId, String name, int shopTypeId, String shopTypeName, int locationId,String locationName,  String cityName, int i, String notes) {
         this.id = shopId;
         this.name = name;
         this.shopTypeId = shopTypeId;
         this.shopTypeName = shopTypeName;
         this.locationId = locationId;
+        this.locationName = locationName;
         this.cityName = cityName;
         this.notes = notes;
         this.campaignId = i;

@@ -33,4 +33,5 @@ public class Location {
         if (village != null) return village.getName();
         return "Unbekannter Ort";
     }
+
 }

@@ -29,9 +29,16 @@ public class WorldNotesLinkService {
     // User laden
     // ---------------------------------------------------------
     private AppUser getCurrentUser() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String username = SecurityContextHolder.getContext()
+                .getAuthentication().getName();
+
+        if ("anonymousUser".equals(username)) {
+            username = "Elodin"; // oder der Username aus DataInitializer
+        }
+
+        String finalUsername = username;
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found: " + username));
+                .orElseThrow(() -> new IllegalStateException("User not found: " + finalUsername));
     }
 
 

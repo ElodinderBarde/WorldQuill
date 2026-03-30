@@ -31,9 +31,13 @@ public class ShopService {
                 shop.getShopType() != null ? shop.getShopType().getId() : 0,
                 shop.getShopType() != null ? shop.getShopType().getName() : null,
                 shop.getLocation() != null ? shop.getLocation().getId() : 0,
-                shop.getLocation() != null && shop.getLocation().getCity() != null ? shop.getLocation().getCity().getCity_name() : null,
-                shop.getLocation() != null && shop.getLocation().getCity() != null ? shop.getLocation().getCity().getId() : 0,
+                shop.getLocation() != null ? shop.getLocation().toString() : null,
+                shop.getLocation() != null && shop.getLocation().getCity() != null
+                        ? shop.getLocation().getCity().getCityName() : null,
+                shop.getLocation() != null && shop.getLocation().getCity() != null
+                        ? shop.getLocation().getCity().getId() : 0,
                 shop.getNotes()
         );
+    }
 }
-}
+

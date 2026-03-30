@@ -15,6 +15,7 @@ public interface WorldNotesFolderRepository extends JpaRepository<WorldNotesFold
     // Alle Folder eines Users
     List<WorldNotesFolder> findAllByUser(AppUser user);
 
+
     // Single Folder eines Users
     Optional<WorldNotesFolder> findByIdAndUser(Long id, AppUser user);
 
@@ -27,6 +28,8 @@ public interface WorldNotesFolderRepository extends JpaRepository<WorldNotesFold
     // Optional: Name-Suche pro User
     Optional<WorldNotesFolder> findByNameAndUser(String name, AppUser user);
 
+    Optional<WorldNotesFolder> findByNameAndUserAndParentFolder(
+            String name, AppUser user, WorldNotesFolder parentFolder);
 
 
 }

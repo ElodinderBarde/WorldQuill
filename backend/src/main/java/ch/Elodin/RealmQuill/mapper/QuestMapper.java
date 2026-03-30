@@ -36,4 +36,5 @@ public class QuestMapper {
         quest.setNotes(dto.getNotes());
         return quest;
     }
+
 }

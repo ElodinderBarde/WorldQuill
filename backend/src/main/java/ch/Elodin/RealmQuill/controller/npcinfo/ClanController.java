@@ -6,6 +6,8 @@ import ch.Elodin.RealmQuill.mapper.ClanMapper;
 import ch.Elodin.RealmQuill.model.Clan;
 import ch.Elodin.RealmQuill.repository.world.ClanRepository;
 import java.util.List;
+
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:5137")
@@ -20,6 +22,7 @@ public class ClanController {
     }
 
     @GetMapping
+    @Transactional(readOnly = true)
     public List<ClanDTO> getAllClans() {
         return clanRepository.findAll()
                 .stream()

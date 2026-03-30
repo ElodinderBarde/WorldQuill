@@ -1,15 +1,13 @@
-// src/pages/SEITENNAME.jsx
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from '../components/navbar';
 
 export default function World() {
-    return (
-        <>
-            <Navbar />
-            <br/>
-            <main style={{ padding: '2rem' }}>
-                <h2>World Page</h2>
-                <p>Hier kommt später der Inhalt der Seite Welt hin.</p>
-            </main>
-        </>
-    );
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        navigate("/notes");  // ← Ziel anpassen
+    }, []);
+
+    return null;
 }

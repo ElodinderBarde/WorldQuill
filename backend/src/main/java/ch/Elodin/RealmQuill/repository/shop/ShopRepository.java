@@ -14,4 +14,5 @@ public interface ShopRepository extends JpaRepository<Shop, Integer> {
 
     @Query("SELECT s FROM Shop s WHERE s.location.id = :locationId")
     List<Shop> findByLocationId(@Param("locationId") int locationId);
+
 }

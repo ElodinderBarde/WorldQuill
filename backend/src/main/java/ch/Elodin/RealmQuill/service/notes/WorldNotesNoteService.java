@@ -33,12 +33,16 @@ public class WorldNotesNoteService {
     private final WorldNotesNoteMapper mapper;
 
     private AppUser getCurrentUser() {
-        String username = Objects.requireNonNull(SecurityContextHolder.getContext()
-                        .getAuthentication())
-                .getName();
+        String username = SecurityContextHolder.getContext()
+                .getAuthentication().getName();
 
+        if ("anonymousUser".equals(username)) {
+            username = "Elodin"; // oder der Username aus DataInitializer
+        }
+
+        String finalUsername = username;
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalStateException("User not found: " + username));
+                .orElseThrow(() -> new IllegalStateException("User not found: " + finalUsername));
     }
 
 
@@ -184,7 +188,7 @@ public class WorldNotesNoteService {
         throw new RuntimeException("Title cannot be null or blank");
 
     }
-
+    @Transactional(readOnly = true)
     public @Nullable NoteReadDTO getById(Long id){
         AppUser user = getCurrentUser();
 

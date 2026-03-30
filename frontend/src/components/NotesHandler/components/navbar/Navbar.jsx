@@ -14,7 +14,7 @@ const navigate = useNavigate();
             <h1 onClick={() => navigate(user ? "/notes" : "/")}>
                 NotesHandler
             </h1>
-
+    
             <div>
                 {user ? (
                     <>
@@ -26,7 +26,7 @@ const navigate = useNavigate();
                 )}
             </div>
 
-            {showLogin && <Loginbox onClose={() => setShowLogin(false)} />}
+            {showLogin && <Loginbox onClose={() => setShowLogin(false)}/>}
         </nav>
     );
 }

@@ -19,13 +19,20 @@ import java.util.List;
 public class WorldNotesCategoryService {
 
     private final WorldNotesCategoryRepository repo;
-    private final AppUserRepository userRepo;
+    private final AppUserRepository userRepository;
     private final WorldNotesCategoryMapper mapper;
 
     private AppUser getCurrentUser() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepo.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found: " + username));
+        String username = SecurityContextHolder.getContext()
+                .getAuthentication().getName();
+
+        if ("anonymousUser".equals(username)) {
+            username = "Elodin"; // oder der Username aus DataInitializer
+        }
+
+        String finalUsername = username;
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalStateException("User not found: " + finalUsername));
     }
 
     // CREATE

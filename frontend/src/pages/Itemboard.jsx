@@ -108,8 +108,7 @@ export default function Itemboard() {
             ListComponent={ItemListAdapter}
             DetailComponent={ItemDetailAdapter}
 
-            // ResourceFilterAdapter leitet onFilterChange
-            // an ResourceFilter weiter
+
             filterProps={{
               onFilterChange: handleFilterChange
             }}

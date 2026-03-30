@@ -38,11 +38,15 @@ public class WorldNotesFolderService {
 
     private AppUser getCurrentUser() {
         String username = SecurityContextHolder.getContext()
-                .getAuthentication()
-                .getName();
+                .getAuthentication().getName();
 
+        if ("anonymousUser".equals(username)) {
+            username = "Elodin"; // oder der Username aus DataInitializer
+        }
+
+        String finalUsername = username;
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new IllegalStateException("User not found: " + username));
+                .orElseThrow(() -> new IllegalStateException("User not found: " + finalUsername));
     }
 
     private boolean isAncestorOf(WorldNotesFolder ancestor, WorldNotesFolder node) {

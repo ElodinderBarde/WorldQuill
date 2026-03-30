@@ -4,6 +4,7 @@ import ch.Elodin.RealmQuill.model.enums.EnumQuest;
 import ch.Elodin.RealmQuill.model.world.Campaign;
 import ch.Elodin.RealmQuill.model.world.Location;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.util.List;
 import jakarta.persistence.*;
@@ -59,12 +60,12 @@ public class Quest {
 	@Column(name = "is_active")
 	private boolean active;
 
-	@JsonBackReference
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "previous_quest_id")
 	private Quest previousQuest;
 
-	@JsonManagedReference
+	@JsonIgnore
 	@OneToMany(mappedBy = "previousQuest")
 	private List<Quest> nextQuests;
 

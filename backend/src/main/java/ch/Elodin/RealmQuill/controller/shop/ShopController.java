@@ -16,6 +16,7 @@ import ch.Elodin.RealmQuill.service.shop.ShopService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,26 +34,32 @@ public class ShopController {
     private final ShopService shopService;
 
 
+
     @GetMapping
     public List<ShopDTO> getAll() {
-        return ShopMapper.toDTOList(shopRepository.findAll()); // DTO statt Entity
+        return ShopMapper.toDTOList(shopRepository.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Shop> getById(@PathVariable int id) {
+    public ResponseEntity<ShopDTO> getById(@PathVariable int id) {
         return shopRepository.findById(id)
-                .map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+                .map(ShopMapper::toDTO)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/byCampaign/{campaignId}")
-    public List<Shop> getByCampaign(@PathVariable int campaignId) {
-        return shopRepository.findByCampaignId(campaignId);
+    public List<ShopDTO> getByCampaign(@PathVariable int campaignId) {
+        return ShopMapper.toDTOList(shopRepository.findByCampaignId(campaignId));
     }
 
     @GetMapping("/byLocation/{locationId}")
-    public List<Shop> getByLocation(@PathVariable int locationId) {
-        return shopRepository.findByLocationId(locationId);
+    public List<ShopDTO> getByLocation(@PathVariable int locationId) {
+        return ShopMapper.toDTOList(shopRepository.findByLocationId(locationId));
     }
+
+
+
 
     @DeleteMapping("/{id}")
     public HttpEntity<Object> deleteShop(@PathVariable Integer id) {

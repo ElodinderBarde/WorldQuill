@@ -22,7 +22,7 @@ export default function FolderTree({
     }
 
         useEffect(() => {
-            if (!isAuthenticated()) return;
+            //if (!isAuthenticated()) return;
 
             async function init() {
                 const res = await loadTree();
