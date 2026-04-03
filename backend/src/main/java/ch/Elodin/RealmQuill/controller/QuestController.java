@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:5137")
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController @RequestMapping("/api/quest")
 public class QuestController extends GenericController<Quest, Integer> {
     private static final int DEFAULT_CAMPAIGN_ID = 1;

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
+import {getQuestLocation} from "@/components/questboard/QuestUtils.js";
 
 export default function QuestList({ onOpenNote, reloadTrigger, onReload, filters }) {
     const [quests, setQuests] = useState([]);
-
+    const [filteredQuests, setFilteredQuests] = useState([]);
 
 
     useEffect(() => {
@@ -11,12 +12,6 @@ export default function QuestList({ onOpenNote, reloadTrigger, onReload, filters
             .then(data => setQuests(data));
     }, [reloadTrigger]);
 
-// 2. Gefilterte Quests berechnen (immer bei filter-Änderung)
-    const [filteredQuests, setFilteredQuests] = useState([]);
-
-    const getQuestLocationLabel = (quest) =>
-        quest.locationName || quest.questlocation?.cityID?.city_name || quest.questlocation?.villageID?.village_name || "";
-
     const getQuestDisplayName = (quest) =>
         quest.questName || quest.questname || quest.questName || "-";
 
@@ -24,13 +19,11 @@ export default function QuestList({ onOpenNote, reloadTrigger, onReload, filters
         const toLower = (value) => (typeof value === "string" ? value.toLowerCase() : "");
 
         const filtered = quests.filter(q => {
-            const questName = q.questName || q.questname || q.questName|| "";
-            const locationLabel = getQuestLocationLabel(q);
-
+            const questName = getQuestDisplayName(q);
             const nameMatch = !filters.name || questName === filters.name;
             const reiheMatch = filters.questreihe ? (q.previousQuestId ?? 0) > 0 : true;
             const groupMatch = !filters.gruppe || toLower(q.group).includes(toLower(filters.gruppe));
-            const ortMatch = !filters.ort || locationLabel === filters.ort;
+            const ortMatch = !filters.ort || getQuestLocation(q) === filters.ort;
             const statusMatch = !filters.status || toLower(q.status) === toLower(filters.status);
             return nameMatch && reiheMatch && groupMatch && ortMatch && statusMatch;
         });
@@ -150,7 +143,7 @@ export default function QuestList({ onOpenNote, reloadTrigger, onReload, filters
                             </button>
                         </td>
                         <td>
-                            {getQuestLocationLabel(quest) || "-"}
+                            {getQuestLocation(quest) || "-"}
                         </td>
                     </tr>
                 ))}

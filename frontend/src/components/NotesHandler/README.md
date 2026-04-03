@@ -606,13 +606,13 @@ mvn spring-boot:run
 ```
 
 Backend erreichbar unter:
- `http://localhost:8080`
+ `http://localhost:8081`
 
 ---
 
 ## Dokumentation
 
-* **Swagger / OpenAPI:** `http://localhost:8080/swagger-ui.html`
+* **Swagger / OpenAPI:** `http://localhost:8081/swagger-ui.html`
 
 ## Versionskontrolle (Git)
 

@@ -16,6 +16,7 @@ import NpcStats from '../components/main-Page/blocks/npc-stats-block/NpcStats.js
 import NpcPicture from "@/components/npc-detail-page/npcPicture.jsx";
 import ActiveQuestPanel from "@/components/main-Page/blocks/quest-info-block/QuestInfo.jsx";
 import QuestNotes from "@/components/main-Page/blocks/quest-notes-block/QuestNotes.jsx";
+import LocationMap from "@/components/main-Page/blocks/City-map-block/location-map.jsx";
 
 function loadFromStorage(key) {
     const raw = localStorage.getItem(key);
@@ -24,7 +25,9 @@ function loadFromStorage(key) {
         return JSON.parse(raw);
     } catch (err) {
         console.warn(`Failed to parse localStorage key ${key}:`, raw, err);
-        try { localStorage.removeItem(key); } catch (e) {}
+        try { localStorage.removeItem(key); } catch (e) {
+            e.id = null
+        }
         return null;
     }
 }
@@ -334,7 +337,9 @@ export default function Main() {
 
                     <div className="grid-stack-item" gs-x="35" gs-y="80" gs-w="25" gs-h="2">
                         <div className="grid-stack-item-content">Karte</div>
+                        <LocationMap selectedLocation={selectedLocation}/>
                     </div>
+
 
                     <div className="grid-stack-item" gs-x="15" gs-y="80" gs-w="20" gs-h="4">
                         <div className="grid-stack-item-content">

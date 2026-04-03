@@ -27,6 +27,25 @@ public class Location {
     @JoinColumn(name = "questlocation")
     private Quest questlocation;
 
+    @Column (name = "location_map")
+    private String locationMap;
+
+
+
+    public String getLocationMap(){
+        if(village != null) return village.getVillagemap();
+        else if(city != null) return city.getCitymap();
+        else return null;
+    }
+public void  setLocationMap(String locationMapUrl){
+    if (city != null) locationMap = locationMapUrl;
+    else if (village != null) locationMap = locationMapUrl;
+    else {
+        locationMap = null;
+    }
+}
+
+
     @Override
     public String toString() {
         if (city != null) return city.getCityName();
@@ -34,4 +53,11 @@ public class Location {
         return "Unbekannter Ort";
     }
 
+
+    public String getLocationName() {
+        if (locationMap != null) return locationMap;
+        if (city != null) return city.getCityName();
+        if (village != null) return village.getName();
+        return "Keine Karte hinterlegt";
+    }
 }

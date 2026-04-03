@@ -5,6 +5,7 @@ import ch.Elodin.RealmQuill.model.Quest;
 import ch.Elodin.RealmQuill.model.enums.EnumQuest;
 import ch.Elodin.RealmQuill.model.world.Location;
 public class QuestMapper {
+
     public static QuestDto toDto(Quest quest) {
         QuestDto dto = new QuestDto();
         dto.setQuestID(quest.getQuestID());
@@ -19,9 +20,11 @@ public class QuestMapper {
         dto.setPreviousQuestId(quest.getPreviousQuest() != null ? quest.getPreviousQuest().getQuestID() : 0);
         Location loc = quest.getQuestlocation();
         dto.setCampaignId(quest.getCampaign().getId());
+        
         if (loc != null) {
             if (loc.getCity() != null) dto.setLocationName(loc.getCity().getCityName());
             else if (loc.getVillage() != null) dto.setLocationName(loc.getVillage().getName());
+            else if(loc.getQuestlocation() == null) dto.setLocationName(loc.getLocationName());
         }
         return dto;
     }
@@ -36,6 +39,9 @@ public class QuestMapper {
         quest.setStatus(EnumQuest.fromString(dto.getStatus()));
         quest.setNotes(dto.getNotes());
         quest.setCampaign(dto.getCampaign());
+        quest.setQuestlocation(dto.getQuestlocationId() != 0 ? new Location()
+        {{ setId(dto.getQuestlocationId()); }} : null);
+
         return quest;
     }
 

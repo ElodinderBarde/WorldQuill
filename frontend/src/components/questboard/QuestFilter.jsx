@@ -1,5 +1,6 @@
 // QuestFilter.jsx
 import { useEffect, useState } from "react";
+import {getQuestLocation} from "@/components/questboard/QuestUtils.js";
 
 export default function QuestFilter({ onFilterChange }) {
     const [filters, setFilters] = useState({
@@ -16,9 +17,6 @@ export default function QuestFilter({ onFilterChange }) {
         fetch("http://localhost:8081/api/quest")
             .then((res) => res.json())
             .then((data) => {
-                const getLocation = (q) =>
-                    q.locationName || q.questlocation?.cityID?.city_name || q.questlocation?.villageID?.village_name || "";
-
                 const names = Array.from(
                     new Set(
                         data
@@ -30,10 +28,12 @@ export default function QuestFilter({ onFilterChange }) {
                 const uniqueLocations = Array.from(
                     new Set(
                         data
-                            .map((q) => getLocation(q))
-                            .filter((location) => typeof location === "string" && location.trim() !== "")
+                            .map((q) => getQuestLocation(q))
+                            .filter((loc) => typeof loc === "string" && loc.trim() !== "")
                     )
                 ).sort((a, b) => a.localeCompare(b));
+
+
 
                 setQuestNames(names);
                 setLocations(uniqueLocations);

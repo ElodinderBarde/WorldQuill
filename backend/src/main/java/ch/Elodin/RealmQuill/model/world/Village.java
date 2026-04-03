@@ -10,6 +10,8 @@ public class Village {
     private int id;
     @Column(name = "village_name", unique = true)
     private String name;
+    @Column(name = "villagemap")
+    private String villagemap;
     @Column(name = "notes")
     private String notes;
 }
