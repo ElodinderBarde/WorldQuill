@@ -7,7 +7,7 @@ import "../components/questboard/QuestBoard.css";
 import {createPortal} from "react-dom";
 
 
-import Navbar from '../components/Navbar';
+import Navbar from '../components/navbar';
 import QuestFilter from "../components/questboard/QuestFilter.jsx";
 import QuestLlist from "../components/questboard/QuestList.jsx";
 import QuestCreate from "../components/questboard/QuestCreate.jsx";

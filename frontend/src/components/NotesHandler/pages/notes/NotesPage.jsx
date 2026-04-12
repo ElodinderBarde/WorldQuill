@@ -4,7 +4,7 @@ import NoteList from "../../components/notes/noteList/NoteList.jsx";
 import NoteEditor from "../../components/notes/noteEditor/NoteEditor.jsx";
 import { useEffect, useState } from "react";
 import api from "../../utils/api.js";
-import "./notesPage.css";
+import "./NotesPage.css";
 import Navbar from "@/components/navbar.jsx";
 import {GridStack} from "gridstack";
 import {  useRef } from "react";

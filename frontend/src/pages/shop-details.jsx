@@ -1,7 +1,7 @@
 import { useLayoutEffect,  useRef } from 'react';
 
 import { useParams } from 'react-router-dom';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/navbar';
 import { GridStack } from 'gridstack';
 import 'gridstack/dist/gridstack.min.css';
 import ShopItems from "../components/shop-details/ShopItems.jsx";

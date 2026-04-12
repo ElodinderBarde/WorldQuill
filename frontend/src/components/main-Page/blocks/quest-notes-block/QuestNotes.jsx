@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getActiveQuests, updateQuestNotes } from "@/service/questApi";
+import { getActiveQuests, updateQuestNotes } from "@/service/questAPI";
 import "./QuestNotes.css";
 
 

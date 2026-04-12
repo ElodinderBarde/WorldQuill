@@ -1,4 +1,4 @@
-import Navbar from "../../Navbar.jsx";
+import Navbar from "../../navbar.jsx";
 
 import BoardLayout from "@/components/BoardTemplates/BoardLayout.jsx";
 import BoardForm from "@/components/BoardTemplates/BoardForm.jsx";

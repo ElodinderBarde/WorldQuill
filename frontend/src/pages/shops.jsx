@@ -3,7 +3,7 @@ import { GridStack } from "gridstack";
 import "gridstack/dist/gridstack.min.css";
 import "../components/shops/shops.css";
 
-import Navbar from "../components/Navbar";
+import Navbar from "../components/navbar";
 import ShopFilter from "../components/shops/ShopFilter";
 import ShopList from "../components/shops/ShopList";
 import ShopCreate from "../components/shops/ShopCreate";

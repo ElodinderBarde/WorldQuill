@@ -1,4 +1,4 @@
-import "./sidebar.css";
+import "./Sidebar.css";
 import FolderTree from "./folderTree/FolderTree.jsx";
 
 export default function Sidebar({ onSelectFolder, onSelectNote, selectedNoteId }) {

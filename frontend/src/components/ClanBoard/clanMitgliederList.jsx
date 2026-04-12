@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./clanMitgliederList.css";
+import "./ClanMitgliederList.css";
 
 export default function ClanMitgliederList({ clan }) {
     const [mitglieder, setMitglieder] = useState([]);
